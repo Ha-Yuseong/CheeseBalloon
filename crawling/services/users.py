@@ -1,8 +1,8 @@
 import datetime
 from sqlalchemy.orm import Session
 
-from models.users import Users
-from schemas.uesers import UsersCreateItem, UsersUpdateItem
+from ..models.users import Users
+from ..schemas.uesers import UsersCreateItem, UsersUpdateItem
 
 
 class UserService:
