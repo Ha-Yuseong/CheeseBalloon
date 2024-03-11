@@ -187,33 +187,38 @@ class Crawling:
 
                 button.click()
 
-
                 html = driver.page_source
                 soup = BeautifulSoup(html, 'html.parser')
 
-                view_cnt = soup.find_all('li', {'data-type', 'cBox'})
+                # broadlist = soup.find_all('div', {'id', 'cBox-list'})
+                # broadlist = driver.find_element(By.ID, "cBox-list")
+                # print(broadlist)
+                view_cnt = driver.find_elements(By.XPATH, "//li[@data-type='cBox']")
                 # view_cnt = driver.find_elements('video_card_badge__w02UD')
                 # print(len(view_cnt))
-                # print(view_cnt[len(view_cnt)-1].text.strip())
-                last_view = view_cnt[len(view_cnt)-1]
-                cnt = re.sub(r'\D', '', last_view.find('span', {'class', 'views'}).text.strip())
+
+                last_view = view_cnt[len(view_cnt) - 1]
+                # print(last_view.find_element(By.CLASS_NAME, "views").text)
+                # print(last_view.find_element(By.XPATH, "//span[@class='views']").text)
+                cnt = re.sub(r'\D', '', last_view.find_element(By.CLASS_NAME, "views").text.strip())
 
                 # print(cnt)
                 if int(cnt) < 50:
                     break
 
             # 'component_container__CTlNd' 클래스를 가진 section 요소 찾기
-            component_container = soup.find_all('div', {'class', 'cBox-list'})
-
-            # 시청자 수를 저장할 리스트 초기화
+            # component_container = soup.find_all('div', {'class', 'cBox-list'})
+            # component_container = driver.find_elements(By.CLASS_NAME, "cBox-list")
+            #
+            # # 시청자 수를 저장할 리스트 초기화
             streamer_list = []
-
-            # 각 파트너 항목에서 시청자 수 추출
-            streamer_items = component_container[0].find_all('li', {'data-type', 'cBox'})
+            #
+            # # 각 파트너 항목에서 시청자 수 추출
+            streamer_items = driver.find_elements(By.XPATH, "//li[@data-type='cBox']")
             index = 0
             for item in streamer_items:
                 # 'video_card_badge__w02UD' 클래스를 가진 요소의 텍스트 추출 - 시청자 수
-                viewer_count = item.find('span', {'class', 'views'})
+                viewer_count = item.find_element(By.CLASS_NAME, "views")
                 if viewer_count:
                     count = re.sub(r'\D', '', viewer_count.text.strip())
                     if int(count) < 50:
@@ -223,16 +228,16 @@ class Crawling:
                 data.append(index)
 
                 # 'name_text__yQG50' 클래스를 가진 요소의 텍스트 추출 - 방송인 이름
-                streamer_name = item.find('a', {'class', 'nick'})
+                streamer_name = item.find_element(By.CLASS_NAME, "nick")
                 if streamer_name:
                     data.append(streamer_name.text.strip())
 
-                click_streamer = item.find('a', {'class', 'thumb'})
+                click_streamer = item.find_element(By.CLASS_NAME, "thumb")
 
                 # print(click_streamer.get('href'))
 
                 # <a> 태그의 href 속성 값을 가져옴
-                href_value = click_streamer.get('href')
+                href_value = click_streamer.get_attribute('href')
 
                 # print(href_value)
 
@@ -243,33 +248,43 @@ class Crawling:
                 driver.switch_to.window(driver.window_handles[1])
 
                 channel_profile = driver.find_element(By.CLASS_NAME, 'favor')
-
-                data.append(channel_profile.text)
+                if channel_profile:
+                    data.append(channel_profile.text)
+                else:
+                    data.append("없음")
 
                 driver.close()  # 새 탭 닫기
                 driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
 
                 # 'video_card_title__Amjk2' 클래스를 가진 요소의 텍스트 추출 - 제목
-                live_title = item.find('a', {'class', 'title'})
+                live_title = item.find_element(By.CLASS_NAME, 'title')
                 if live_title:
                     # blind_text = live_title.find('span', {'class', 'blind'}).get_text()
                     # data.append(live_title.text.replace(blind_text, '').strip())
+                    # print(live_title.text)
                     data.append(live_title.text.strip())
 
                 # 시청자 수 데이터
+                # print(viewer_count.text.strip())
                 data.append(viewer_count.text.strip())
 
                 # 'video_card_category__xQ15T' 클래스를 가진 요소의 텍스트 추출 - 태그
-                live_tag = item.find('div', {'class', 'tag_wrap'})
+                live_tag = item.find_element(By.CLASS_NAME, 'tag_wrap')
                 if live_tag:
-                    data.append(live_tag.text.strip())
+                    tags = []
+                    tag_list = live_tag.find_elements(By.TAG_NAME, "a")
+                    for tag in tag_list:
+                        tags.append(tag.text.strip())
+                    # print(tags)
+                    data.append(tags)
                 else:
                     data.append("없음")
 
                 # 'video_card_image__yHXqv' 클래스를 가진 요소의 텍스트 추출 - 썸네일
-                live_img = click_streamer.find('img')
+                live_img = driver.find_element(By.CLASS_NAME, "thumbs-box")
                 if live_img:
-                    data.append(live_img.get('src'))
+                    live_url = live_img.find_element(By.XPATH, "//img")
+                    data.append(live_url.get_attribute('src'))
 
                 streamer_list.append(data)
 
