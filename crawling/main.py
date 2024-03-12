@@ -1,6 +1,5 @@
 
 from fastapi import FastAPI
-from sqlalchemy.orm import Session
 
 from config.database import SessionLocal, engine, Base
 from controllers import users
