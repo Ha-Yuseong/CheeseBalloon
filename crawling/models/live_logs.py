@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import String, Column, BigInteger, Integer, DateTime, ForeignKey, FLOAT
+from sqlalchemy.orm import relationship
 
 from config.database import Base
 
@@ -15,3 +16,5 @@ class LiveLog(Base):
     rating = Column(FLOAT, nullable=False)
     total_rating = Column(FLOAT, nullable=False)
     req_dt = Column(DateTime, nullable=False, default= datetime.today())
+
+    live = relationship("Live", back_populates="live_logs")
