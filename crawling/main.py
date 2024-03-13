@@ -1,21 +1,34 @@
+from fastapi import FastAPI, HTTPException, Depends
+from sqlalchemy.orm import Session
+from config.database import engine, Base, get_db
+from businesses.streamers import StreamerBusiness
+from schemas.streamers import StreamerCreate, StreamerRead
+from models.streamer_logs import StreamerLog
+from schemas.streamer_logs import StreamerLogCreate, StreamerLogRead
+# from controllers import users
 
-from fastapi import FastAPI
-
-from config.database import SessionLocal, engine, Base
-from controllers import users
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-app.include_router(users.router)
+# app.include_router(users.router)
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @app.get("/")
 async def base_get_route():
-    return {"message": "hello dddworld"}
+    return {"message": "hello world"}
+
+@app.post("/streamers/", response_model=StreamerRead)
+async def create_streamer(streamer: StreamerCreate, db: Session = Depends(get_db)):
+    return StreamerBusiness().create(db=db, streamer=streamer)
+
+@app.post("/streamer_logs", response_model=StreamerLogRead)
+async def create_streamer_log(streamer_log: StreamerLogCreate, db: Session = Depends(get_db)):
+    db_streamer_log = StreamerLog(
+        streamer_id=streamer_log.streamer_id,
+        follower=streamer_log.follower,
+    )
+    db.add(db_streamer_log)
+    db.commit()
+    db.refresh(db_streamer_log)
+    return db_streamer_log
