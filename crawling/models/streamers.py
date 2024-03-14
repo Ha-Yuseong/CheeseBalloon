@@ -16,3 +16,4 @@ class Streamer(Base):
     platform = Column(String(1), nullable=False)
 
     logs = relationship("StreamerLog", back_populates="streamer")
+    lives = relationship("Live", back_populates="streamer")
