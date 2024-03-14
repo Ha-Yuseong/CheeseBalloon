@@ -11,6 +11,7 @@ from tabulate import tabulate
 import time
 import re
 
+
 class Crawling:
     def chzzk(self):
         # Chrome 옵션 설정
@@ -65,23 +66,21 @@ class Crawling:
                 # view_cnt = driver.find_elements('video_card_badge__w02UD')
                 # print(len(view_cnt))
                 # print(view_cnt[len(view_cnt)-1].text.strip())
-                cnt = re.sub(r'\D', '', view_cnt[len(view_cnt)-1].text.strip())
+                cnt = re.sub(r'\D', '', view_cnt[len(view_cnt) - 1].text.strip())
                 # print(cnt)
                 if int(cnt) < 20:
                     break
                 scroll_position = new_height
                 # last_height = new_height
 
-
-
             # 'component_container__CTlNd' 클래스를 가진 section 요소 찾기
-            component_container = soup.find_all('section', {'class','component_section__lGX4U'})
+            component_container = soup.find_all('section', {'class', 'component_section__lGX4U'})
 
             # 시청자 수를 저장할 리스트 초기화
             streamer_list = []
 
             # 각 파트너 항목에서 시청자 수 추출
-            streamer_items = component_container[0].find_all('li', {'class','component_item__WsLOa'})
+            streamer_items = component_container[0].find_all('li', {'class', 'component_item__WsLOa'})
             index = 0
             for item in streamer_items:
                 # 'video_card_badge__w02UD' 클래스를 가진 요소의 텍스트 추출 - 시청자 수
@@ -124,7 +123,7 @@ class Crawling:
                 # 'video_card_title__Amjk2' 클래스를 가진 요소의 텍스트 추출 - 제목
                 live_title = item.find('a', {'class', 'video_card_title__Amjk2'})
                 if live_title:
-                    blind_text = live_title.find('span', {'class','blind'}).get_text()
+                    blind_text = live_title.find('span', {'class', 'blind'}).get_text()
                     data.append(live_title.text.replace(blind_text, '').strip())
 
                 # 시청자 수 데이터
@@ -142,10 +141,7 @@ class Crawling:
                 if live_img:
                     data.append(live_img.get('src'))
 
-
                 streamer_list.append(data)
-
-
 
             # 결과 출력
             print(tabulate(streamer_list, headers=["번호", "방송인", "팔로우", "제목", "시청자 수", "태그", "썸네일"]))
@@ -254,7 +250,6 @@ class Crawling:
                     driver.close()  # 새 탭 닫기
                     driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
                     continue
-
 
                 data = []
                 index += 1

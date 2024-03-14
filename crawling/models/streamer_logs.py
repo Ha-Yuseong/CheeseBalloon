@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 
 from config.database import Base
-from categories.streamers import Streamer
+from models.streamers import Streamer
 
 
 class StreamerLog(Base):
