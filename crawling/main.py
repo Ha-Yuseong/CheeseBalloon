@@ -5,6 +5,7 @@ from businesses.streamers import StreamerBusiness
 from schemas.streamers import StreamerCreate, StreamerRead
 from models.streamer_logs import StreamerLog
 from schemas.streamer_logs import StreamerLogCreate, StreamerLogRead
+from crawling import afreeca
 # from controllers import users
 
 
@@ -32,3 +33,7 @@ async def create_streamer_log(streamer_log: StreamerLogCreate, db: Session = Dep
     db.commit()
     db.refresh(db_streamer_log)
     return db_streamer_log
+
+@app.get("/afreeca")
+async def start_afreeca_crawling():
+    return afreeca()

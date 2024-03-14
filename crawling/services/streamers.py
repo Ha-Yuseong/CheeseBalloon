@@ -2,6 +2,8 @@ from sqlalchemy.orm import Session
 
 from models.streamers import Streamer
 from schemas.streamers import StreamerCreate
+
+
 class StreamerService:
     def create(self, db: Session, streamer: StreamerCreate):
         db_streamer = Streamer(
@@ -16,3 +18,10 @@ class StreamerService:
         db.commit()
         db.refresh(db_streamer)
         return db_streamer
+
+    def get_streamer(self, db: Session, origin_id: str) -> bool:
+        streamer = db.query(Streamer).filter(Streamer.origin_id == origin_id).first()
+        if streamer:
+            return True
+        else:
+            return False

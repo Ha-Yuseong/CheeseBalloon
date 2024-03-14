@@ -15,7 +15,7 @@ class LiveLog(Base):
     viewer_cnt = Column(Integer, nullable=False)
     rating = Column(FLOAT, nullable=False)
     total_rating = Column(FLOAT, nullable=False)
-    req_dt = Column(DateTime, nullable=False, default= datetime.today())
+    live_dt = Column(DateTime, nullable=False, default= datetime.today())
 
     live = relationship("Live", back_populates="logs")
     category = relationship("Category", back_populates="live_logs")

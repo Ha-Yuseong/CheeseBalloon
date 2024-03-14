@@ -255,6 +255,7 @@ class Crawling:
                     driver.switch_to.window(driver.window_handles[0])  # 원래 탭으로 스위치
                     continue
 
+
                 data = []
                 index += 1
                 data.append(index)
