@@ -10,10 +10,6 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 export default function DetailViewerChart() {
   const chartData = {
     options: {
-      title: {
-        text: "시청자수",
-        align: "center",
-      },
       chart: {
         toolbar: {
           show: false,

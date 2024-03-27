@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 export default function DetailProfileContent() {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-
-  
+  // const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   return (
     <div>

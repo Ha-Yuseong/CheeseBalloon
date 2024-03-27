@@ -10,10 +10,6 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 export default function DetailDurationChart() {
   const chartData = {
     options: {
-      title: {
-        text: "방송 시간",
-        align: "center",
-      },
       chart: {
         toolbar: {
           show: false,

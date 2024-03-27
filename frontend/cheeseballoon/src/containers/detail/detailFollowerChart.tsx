@@ -10,10 +10,6 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 export default function DetailFollowerChart() {
   const chartData = {
     options: {
-      title: {
-        text: "팔로워수",
-        align: "center",
-      },
       chart: {
         toolbar: {
           show: false,

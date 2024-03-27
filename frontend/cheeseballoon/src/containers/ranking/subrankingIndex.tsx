@@ -5,7 +5,7 @@ import DaySelect from "src/components/ranking/dayselect";
 import PlatformSelect from "src/components/ranking/platformselect";
 import Subrank from "src/components/ranking/subrank";
 import SubrankAll from "src/components/ranking/subrankAll";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Ranking() {
   const [date, setDate] = useState(1);
@@ -24,7 +24,9 @@ export default function Ranking() {
   // }, [date, platform]);
   return (
     <div className={style.ranking}>
-      <p className={style.title}>팔로워 수</p>
+      <p className={style.title}>
+        팔로워 수 {date} {platform}
+      </p>
       <div className={style.detail_menu}>
         <DaySelect setDate={setDate} />
         <PlatformSelect setPlatform={setPlatform} />

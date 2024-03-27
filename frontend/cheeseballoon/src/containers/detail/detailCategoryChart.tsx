@@ -10,10 +10,6 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 export default function DetailCategoryChart() {
   const chartData = {
     options: {
-      title: {
-        text: "카테고리",
-        align: "center",
-      },
       chart: {
         toolbar: {
           show: false,
@@ -53,7 +49,7 @@ export default function DetailCategoryChart() {
   };
 
   return (
-    <div >
+    <div>
       <ApexChart
         type="treemap"
         options={chartData.options}

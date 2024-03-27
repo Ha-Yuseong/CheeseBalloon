@@ -3,7 +3,7 @@
 import style from "src/containers/ranking/rankingIndex.module.scss";
 import DaySelect from "src/components/ranking/dayselect";
 import PlatformSelect from "src/components/ranking/platformselect";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import RankingIndex from "src/components/ranking/rankingIndex";
 
 export default function Ranking() {
@@ -27,6 +27,8 @@ export default function Ranking() {
       <div className={style.wrapper}>
         <div className={style.subtitle}>
           정확한 데이터 수치는 더보기를 눌러 확인해주세요.
+          {date}
+          {platform}
         </div>
         <div className={style.select_menu}>
           <DaySelect setDate={setDate} />
