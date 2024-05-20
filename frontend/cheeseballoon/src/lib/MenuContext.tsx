@@ -1,8 +1,8 @@
 "use client";
 
 import { createContext, useContext, useEffect } from "react";
-import OpenMenu from "src/components/nav/item/openIndex";
-import ClosedMenu from "src/components/nav/item/closedIndex";
+import OpenMenu from "src/components/nav/item/OpenIndex";
+import ClosedMenu from "src/components/nav/item/ClosedIndex";
 
 import { useToggleState } from "../stores/store";
 
@@ -18,7 +18,6 @@ export function MenuProvider() {
       <div style={{ marginTop: "60px" }}>
         {value ? <OpenMenu /> : <ClosedMenu />}
       </div>
-      ;
     </MenuContext.Provider>
   );
 }
