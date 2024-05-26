@@ -7,7 +7,7 @@ import chzzkIcon from "public/svgs/chzzk.svg";
 import afreecaIcon from "public/svgs/afreeca.svg";
 import anya from "public/svgs/anya.jpg";
 import blankProfile from "public/svgs/blank_profile.png";
-import style from "src/containers/live/LiveCard.module.scss";
+import style from "./liveCard.module.scss";
 
 interface LiveInfo {
   liveinfo: {
@@ -153,7 +153,7 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
       </div>
       <div className={style["fourth-container"]}>
         <img src="/svgs/viewericon.svg" alt="" className={style.viewericon} />
-        <div className={style.viewers}>{liveinfo.viewerCnt}</div>
+        <div className={style.viewers}>{liveinfo.viewerCnt.toLocaleString()}</div>
       </div>
     </div>
   );
