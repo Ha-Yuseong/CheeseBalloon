@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import style from "./liveList.module.scss";
-import LiveCard from "./liveCard";
+import LiveCard from "./LiveCard";
 
 interface LiveInfo {
   streamerId: number;
