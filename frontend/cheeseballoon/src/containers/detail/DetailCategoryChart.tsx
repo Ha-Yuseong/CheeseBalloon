@@ -110,6 +110,9 @@ export default function DetailCategoryChart() {
       },
       plotOptions: {
         treemap: {
+          dataLabels: {
+            format: "truncate",
+          },
           distributed: true,
           enableShades: true,
         },

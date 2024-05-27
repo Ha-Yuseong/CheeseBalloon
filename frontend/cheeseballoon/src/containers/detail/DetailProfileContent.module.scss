@@ -1,6 +1,11 @@
 .wrapper {
   display: flex;
   align-items: center;
+  // background-image: url("./../../../public/svgs/chzzk_bg.jpg");
+  // background-image: url("./../../../public/svgs/soop_bg.jpg");
+  // background-repeat: no-repeat;
+  // background-position-x: right;
+  // background-size: contain;
   padding: 0.5rem;
 }
 
@@ -59,11 +64,11 @@
 }
 
 .positive {
-  color: #8ce09e
+  color: #8ce09e;
 }
 
 .negative {
-  color: #d38883
+  color: #d38883;
 }
 
 .live {

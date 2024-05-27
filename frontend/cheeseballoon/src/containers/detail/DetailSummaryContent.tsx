@@ -12,7 +12,7 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 interface SummaryContentData {
   avgViewer: number;
   viewerDiff: number;
-  avgTime: number;
+  totalAirTime: number;
   timeDiff: number;
   follow: number;
   followDiff: number;
@@ -21,16 +21,16 @@ interface SummaryContentData {
 }
 
 // 임시데이터
-const data: SummaryContentData = {
-  avgViewer: 8534,
-  viewerDiff: 237,
-  avgTime: 10.7,
-  timeDiff: 0.5,
-  follow: 18375,
-  followDiff: 273,
-  rating: 5.7,
-  ratingDiff: 0.3,
-};
+// const data: SummaryContentData = {
+//   avgViewer: 8534,
+//   viewerDiff: 237,
+//   totalAirTime: 10.7,
+//   timeDiff: 0.5,
+//   follow: 18375,
+//   followDiff: 273,
+//   rating: 5.7,
+//   ratingDiff: 0.3,
+// };
 
 const SUMMARY_API_URL = process.env.NEXT_PUBLIC_SUMMARY_API_URL;
 
@@ -105,18 +105,18 @@ const chartData = {
 
 export default function DetailSummaryContent() {
   const [summaryData, setSummaryData] = useState<SummaryContentData | null>(
-    data
+    null
   );
   const { id } = useParams();
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const data = await getData(id.toString());
-  //     setSummaryData(data.data);
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      const responseData = await getData(id.toString());
+      setSummaryData(responseData.data);
+    };
 
-  //   fetchData();
-  // }, [id]);
+    fetchData();
+  }, [id]);
 
   const contentBox = (name: string, num: number, diff: number) => {
     let mod: string = "%";
@@ -202,7 +202,7 @@ export default function DetailSummaryContent() {
           )}
           {contentBox(
             "평균 방송시간",
-            summaryData.avgTime,
+            summaryData.totalAirTime,
             summaryData.timeDiff
           )}
           {contentBox("팔로워", summaryData.follow, summaryData.followDiff)}

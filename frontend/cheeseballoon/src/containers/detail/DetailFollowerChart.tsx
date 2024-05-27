@@ -73,7 +73,7 @@ export default function DetailFollowerChart() {
 
     const maxYaxis = Math.ceil(Math.max(...followerArray) / digit) * digit + digit;
     const minYaxis = Math.floor(Math.min(...followerArray) / digit) * digit - digit;
-    const tickAmount = Math.ceil(diff / digit) * digit
+    const tickAmount = Math.ceil(diff / digit)
     const stepSize = digit
 
     return {maxYaxis, minYaxis, tickAmount, stepSize}

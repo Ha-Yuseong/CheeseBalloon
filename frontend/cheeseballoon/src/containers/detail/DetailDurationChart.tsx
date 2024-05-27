@@ -14,14 +14,14 @@ type AlignType = "center";
 type TimeDataType = {
   totalTime: number;
   timeDiff: number;
-  dailyTimes: [date: string, time: number];
+  dailyTimes: [date: string, totalAirtime : number];
 };
 
 type DateArrayType = string[];
 type TimeArrayType = number[];
 type DairyTimesType = {
   date: string;
-  time: string;
+  totalAirtime : string;
 };
 
 const API_URL = process.env.NEXT_PUBLIC_TIME_API_URL;
@@ -49,9 +49,8 @@ export default function DetailDurationChart() {
       const dailyData = responseData.data.dailyTimes;
       const dates = dailyData.map((item: DairyTimesType) => item.date);
       const times = dailyData.map((item: DairyTimesType) =>
-        parseInt(item.time, 10)
+        parseInt(item.totalAirtime , 10)
       );
-
       const datesChange = dates.map((dateString: string) => {
         const parts = dateString.split("-");
         const [year, month, day] = parts.map(Number);
@@ -61,7 +60,6 @@ export default function DetailDurationChart() {
         });
         return `${year}.${month}.${day} (${dayOfWeek})`;
       });
-
       setTimeArray(times);
       setDateXaxis(datesChange);
       setTimeData(responseData.data);

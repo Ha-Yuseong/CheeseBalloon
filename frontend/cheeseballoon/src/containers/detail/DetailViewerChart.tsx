@@ -198,7 +198,7 @@ export default function DetailViewerChart() {
           options={chartData.options}
           series={chartData.series}
           height="170%"
-          width="100%"
+          width="101%"
         />
       </div>
       {viewerData && (
