@@ -67,6 +67,19 @@ export default function DetailFollowerChart() {
     fetchData();
   }, [id, date]);
 
+  const yaxis = () => {
+    const diff = Math.max(...followerArray) - Math.min(...followerArray);
+    const digit = 10 ** (diff.toString().length - 1);
+
+    const maxYaxis = Math.ceil(Math.max(...followerArray) / digit) * digit + digit;
+    const minYaxis = Math.floor(Math.min(...followerArray) / digit) * digit - digit;
+    const tickAmount = Math.ceil(diff / digit) * digit
+    const stepSize = digit
+
+    return {maxYaxis, minYaxis, tickAmount, stepSize}
+  };
+  const {maxYaxis, minYaxis, tickAmount, stepSize} = yaxis()
+
   const chartData = {
     options: {
       title: {
@@ -106,7 +119,10 @@ export default function DetailFollowerChart() {
       },
       yaxis: [
         {
-          tickAmount: 5,
+          min: minYaxis,
+          max: maxYaxis,
+          tickAmount: tickAmount as number,
+          stepSize: stepSize as number,
           labels: {
             style: {
               colors: "white",

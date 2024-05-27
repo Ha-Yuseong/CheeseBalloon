@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import style from "./liveList.module.scss";
+import style from "./LiveList.module.scss";
 import LiveCard from "./LiveCard";
 
 interface LiveInfo {

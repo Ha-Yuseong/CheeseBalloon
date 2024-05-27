@@ -41,10 +41,6 @@ export default function DetailDurationChart() {
   const { id, date } = useParams();
   const [timeData, setTimeData] = useState<TimeDataType | null>(null);
   const [timeArray, setTimeArray] = useState<TimeArrayType | null>([1]);
-  // const [totalTimeArray, setTotalTimeArray] = useState<TimeArrayType | null>([
-  //   1,
-  // ]);
-  // const [dateArray, setDateArray] = useState<DateArrayType | null>(null);
   const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(["1"]);
 
   useEffect(() => {
@@ -55,15 +51,7 @@ export default function DetailDurationChart() {
       const times = dailyData.map((item: DairyTimesType) =>
         parseInt(item.time, 10)
       );
-      // const totalTime = () => {
-      //   let timeSum = 0;
-      //   const resultArray = [];
-      //   for (let i = 0; i < times.length; i += 1) {
-      //     timeSum += times[i];
-      //     resultArray.push(timeSum);
-      //   }
-      //   return resultArray;
-      // };
+
       const datesChange = dates.map((dateString: string) => {
         const parts = dateString.split("-");
         const [year, month, day] = parts.map(Number);
@@ -74,8 +62,6 @@ export default function DetailDurationChart() {
         return `${year}.${month}.${day} (${dayOfWeek})`;
       });
 
-      // setTotalTimeArray(totalTime());
-      // setDateArray(dates);
       setTimeArray(times);
       setDateXaxis(datesChange);
       setTimeData(responseData.data);
@@ -83,6 +69,7 @@ export default function DetailDurationChart() {
     fetchData();
   }, [id, date]);
 
+  
   const chartData = {
     options: {
       title: {
@@ -161,11 +148,6 @@ export default function DetailDurationChart() {
         type: "bar",
         data: timeArray as number[],
       },
-      // {
-      //   name: "총 방송시간",
-      //   type: "line",
-      //   data: totalTimeArray as number[],
-      // },
     ],
   };
 
