@@ -14,9 +14,12 @@ interface StreamerDataType {
   streamUrl: string;
   followerCnt: number;
   platform: string;
+  bookmark: boolean;
+}
+
+interface RankDataType {
   rank: number;
   diff: number;
-  bookmark: boolean;
 }
 interface LiveDataType {
   live: boolean;
@@ -25,7 +28,7 @@ interface LiveDataType {
 }
 
 // 임시 데이터
-// const data: StreamerDataType = {
+// const streamerData: StreamerDataType = {
 //   streamId: 1234,
 //   originId: "hanryang1125",
 //   name: "풍월량",
@@ -34,13 +37,12 @@ interface LiveDataType {
 //   streamUrl: "https://chzzk.naver.com/7ce8032370ac5121dcabce7bad375ced",
 //   followerCnt: 178000,
 //   platform: "치지직",
-//   rank: 1,
-//   diff: 3,
 //   bookmark: false,
 // };
 
 const STREAMER_API_URL = process.env.NEXT_PUBLIC_STREAMER_API_URL;
 const STREAMER_LIVE_API_URL = process.env.NEXT_PUBLIC_STREAMER_LIVE_API_URL;
+const SUMMARY_API_URL = process.env.NEXT_PUBLIC_SUMMARY_API_URL;
 
 async function getData(api: string, streamerId: string) {
   const res = await fetch(`${api}${streamerId}`);
@@ -53,6 +55,7 @@ export default function DetailProfileContent() {
   const [streamerData, setStreamerData] = useState<StreamerDataType | null>(
     null
   );
+  const [rankData, setRankData] = useState<RankDataType | null>(null);
   const [liveData, setLiveData] = useState<LiveDataType | null>(null);
   const router = useRouter();
 
@@ -60,6 +63,10 @@ export default function DetailProfileContent() {
     const fetchData = async () => {
       const streamerDataResponse = await getData(
         STREAMER_API_URL as string,
+        id.toString()
+      );
+      const rankDataResponse = await getData(
+        SUMMARY_API_URL as string,
         id.toString()
       );
       const liveDataResponse = await getData(
@@ -72,11 +79,11 @@ export default function DetailProfileContent() {
       } else {
         router.push("/error");
       }
-
+      if ("data" in rankDataResponse) {
+        setRankData(rankDataResponse.data);
+      }
       if ("data" in liveDataResponse) {
         setLiveData(liveDataResponse.data);
-      } else {
-        router.push("/error");
       }
     };
 
@@ -84,7 +91,8 @@ export default function DetailProfileContent() {
   }, [id, router]);
 
   return (
-    streamerData && (
+    streamerData &&
+    rankData && (
       <div className={style.wrapper}>
         <div className={style["image-container"]}>
           <img
@@ -108,13 +116,11 @@ export default function DetailProfileContent() {
           </div>
         </div>
         <div className={style.rank}>
-          <div className={style["rank-num"]}># {streamerData.rank}</div>
+          <div className={style["rank-num"]}># {rankData.rank}</div>
           <div
-            className={`${style["rank-diff"]} ${streamerData.diff >= 0 ? style.positive : style.negative}`}
+            className={`${style["rank-diff"]} ${rankData.diff >= 0 ? style.positive : style.negative}`}
           >
-            {streamerData.diff >= 0
-              ? `(+${streamerData.diff})`
-              : `(-${streamerData.diff})`}
+            {rankData.diff >= 0 ? `(+${rankData.diff})` : `(${rankData.diff})`}
           </div>
         </div>
       </div>

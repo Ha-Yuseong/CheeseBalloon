@@ -75,6 +75,31 @@ export default function DetailViewerChart() {
     fetchData();
   }, [id, date]);
 
+  const maxYaxis = () => {
+    const maxViewer = viewerData?.maxViewer;
+
+    if (maxViewer !== undefined) {
+      switch (true) {
+        case maxViewer < 20:
+          return 20;
+        case maxViewer < 100:
+          return 100;
+        case maxViewer < 250:
+          return 250;
+        case maxViewer < 500:
+          return 500;
+        case maxViewer < 1000:
+          return 1000;
+        case maxViewer < 2500:
+          return 2500;
+        default:
+          return Math.ceil(maxViewer / 5000) * 5000;
+      }
+    } else {
+      return 100000;
+    }
+  };
+
   const chartData = {
     options: {
       title: {
@@ -115,6 +140,8 @@ export default function DetailViewerChart() {
       },
       yaxis: {
         tickAmount: 5,
+        min: 0,
+        max: maxYaxis,
         labels: {
           style: {
             colors: "white",
@@ -171,7 +198,7 @@ export default function DetailViewerChart() {
           options={chartData.options}
           series={chartData.series}
           height="170%"
-          width="100%"
+          width="101%"
         />
       </div>
       {viewerData && (

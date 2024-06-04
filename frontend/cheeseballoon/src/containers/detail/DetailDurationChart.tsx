@@ -14,14 +14,14 @@ type AlignType = "center";
 type TimeDataType = {
   totalTime: number;
   timeDiff: number;
-  dailyTimes: [date: string, time: number];
+  dailyTimes: [date: string, totalAirTime : number];
 };
 
 type DateArrayType = string[];
 type TimeArrayType = number[];
 type DairyTimesType = {
   date: string;
-  time: string;
+  totalAirTime : string;
 };
 
 const API_URL = process.env.NEXT_PUBLIC_TIME_API_URL;
@@ -41,10 +41,6 @@ export default function DetailDurationChart() {
   const { id, date } = useParams();
   const [timeData, setTimeData] = useState<TimeDataType | null>(null);
   const [timeArray, setTimeArray] = useState<TimeArrayType | null>([1]);
-  // const [totalTimeArray, setTotalTimeArray] = useState<TimeArrayType | null>([
-  //   1,
-  // ]);
-  // const [dateArray, setDateArray] = useState<DateArrayType | null>(null);
   const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(["1"]);
 
   useEffect(() => {
@@ -53,17 +49,8 @@ export default function DetailDurationChart() {
       const dailyData = responseData.data.dailyTimes;
       const dates = dailyData.map((item: DairyTimesType) => item.date);
       const times = dailyData.map((item: DairyTimesType) =>
-        parseInt(item.time, 10)
+        Math.floor(parseInt(item.totalAirTime , 10) / 3600 * 10) / 10
       );
-      // const totalTime = () => {
-      //   let timeSum = 0;
-      //   const resultArray = [];
-      //   for (let i = 0; i < times.length; i += 1) {
-      //     timeSum += times[i];
-      //     resultArray.push(timeSum);
-      //   }
-      //   return resultArray;
-      // };
       const datesChange = dates.map((dateString: string) => {
         const parts = dateString.split("-");
         const [year, month, day] = parts.map(Number);
@@ -73,9 +60,6 @@ export default function DetailDurationChart() {
         });
         return `${year}.${month}.${day} (${dayOfWeek})`;
       });
-
-      // setTotalTimeArray(totalTime());
-      // setDateArray(dates);
       setTimeArray(times);
       setDateXaxis(datesChange);
       setTimeData(responseData.data);
@@ -83,6 +67,7 @@ export default function DetailDurationChart() {
     fetchData();
   }, [id, date]);
 
+  
   const chartData = {
     options: {
       title: {
@@ -161,11 +146,6 @@ export default function DetailDurationChart() {
         type: "bar",
         data: timeArray as number[],
       },
-      // {
-      //   name: "총 방송시간",
-      //   type: "line",
-      //   data: totalTimeArray as number[],
-      // },
     ],
   };
 
@@ -185,12 +165,12 @@ export default function DetailDurationChart() {
           <div className={style["time-container"]}>
             <div className={style["time-title"]}>총 방송시간</div>
             <div className={style["time-cnt"]}>
-              {timeData.totalTime.toLocaleString()}시간
+              {(Math.floor(timeData.totalTime / 3600 * 10) / 10).toLocaleString()}시간
             </div>
             <div
               className={`${style["time-diff"]} ${timeData.timeDiff >= 0 ? style.positive : style.negative}`}
             >
-              {Math.abs(timeData.timeDiff).toLocaleString()}시간{" "}
+              {(Math.floor((timeData.timeDiff / 3600) * 10) / 10).toLocaleString()}시간{" "}
               {timeData.timeDiff >= 0 ? "증가 ↑" : "감소 ↓"}
             </div>
           </div>

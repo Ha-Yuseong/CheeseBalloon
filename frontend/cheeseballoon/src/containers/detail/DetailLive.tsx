@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import anya from "public/svgs/anya2.jpg";
+import error from "public/svgs/no_image.jpg";
 import style from "src/containers/detail/DetailLive.module.scss";
 
 const API_URL = process.env.NEXT_PUBLIC_STREAMER_LIVE_API_URL;
@@ -47,7 +47,7 @@ export default function DetailLive() {
                 src={liveData.thumbnailUrl}
                 alt="라이브"
                 onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-                  e.currentTarget.src = anya.src;
+                  e.currentTarget.src = error.src;
                 }}
                 className={style.thumbnail}
               />
