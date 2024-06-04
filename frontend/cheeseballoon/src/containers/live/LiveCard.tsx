@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import chzzkIcon from "public/svgs/chzzk.svg";
 import afreecaIcon from "public/svgs/afreeca.svg";
-import anya from "public/svgs/anya.jpg";
+import error from "public/svgs/no_image.jpg";
 import blankProfile from "public/svgs/blank_profile.png";
 import style from "./LiveCard.module.scss";
 
@@ -73,7 +73,7 @@ export default function LiveCard({ liveinfo }: LiveInfo) {
           src={liveinfo.thumbnailUrl}
           alt="썸네일"
           onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-            e.currentTarget.src = anya.src;
+            e.currentTarget.src = error.src;
           }}
           className={style.thumbnail}
         />

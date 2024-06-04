@@ -10,6 +10,7 @@ const ApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 type AlignType = "center";
+type FormatType = "truncate";
 
 type CategoryDataType = {
   totalTime: number;
@@ -111,7 +112,7 @@ export default function DetailCategoryChart() {
       plotOptions: {
         treemap: {
           dataLabels: {
-            format: "truncate",
+            format: "truncate" as FormatType,
           },
           distributed: true,
           enableShades: true,

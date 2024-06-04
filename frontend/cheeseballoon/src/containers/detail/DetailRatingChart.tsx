@@ -37,7 +37,7 @@ async function getData(streamerId: string, date: string) {
 
   return res.json();
 }
-
+const a = [6, null, 5, null, 4, 3, 3]
 export default function DetailRatingChart() {
   const { id, date } = useParams();
   const [ratingData, setRatingData] = useState<RatingDataType | null>(null);
@@ -96,7 +96,6 @@ export default function DetailRatingChart() {
         return Math.max(Math.floor(maxRating), 30);
     }
   };
-
   const chartData = {
     options: {
       title: {

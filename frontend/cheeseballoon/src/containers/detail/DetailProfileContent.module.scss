@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   // background-image: url("./../../../public/svgs/chzzk_bg.jpg");
-  // background-image: url("./../../../public/svgs/soop_bg.jpg");
+  // background-image: url("./../../../public/svgs/soop_bg.png");
   // background-repeat: no-repeat;
   // background-position-x: right;
   // background-size: contain;
@@ -11,10 +11,14 @@
 
 .image-container {
   height: 6rem;
+  width: 6rem;
+  padding-right: 1rem;
 }
 
 .profile-image {
   height: 100%;
+  width: 100%;
+  object-fit: cover;
   border-radius: 31%;
   margin-right: 2rem;
 }

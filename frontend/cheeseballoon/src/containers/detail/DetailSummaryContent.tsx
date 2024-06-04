@@ -202,8 +202,8 @@ export default function DetailSummaryContent() {
           )}
           {contentBox(
             "평균 방송시간",
-            summaryData.totalAirTime,
-            summaryData.timeDiff
+            (Math.floor((summaryData.totalAirTime / 3600)*10) / 10),
+            (Math.floor((summaryData.timeDiff / 3600)*10) / 10),
           )}
           {contentBox("팔로워", summaryData.follow, summaryData.followDiff)}
           {contentBox(

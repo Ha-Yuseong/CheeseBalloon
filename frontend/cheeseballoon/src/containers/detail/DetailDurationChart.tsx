@@ -14,14 +14,14 @@ type AlignType = "center";
 type TimeDataType = {
   totalTime: number;
   timeDiff: number;
-  dailyTimes: [date: string, totalAirtime : number];
+  dailyTimes: [date: string, totalAirTime : number];
 };
 
 type DateArrayType = string[];
 type TimeArrayType = number[];
 type DairyTimesType = {
   date: string;
-  totalAirtime : string;
+  totalAirTime : string;
 };
 
 const API_URL = process.env.NEXT_PUBLIC_TIME_API_URL;
@@ -49,7 +49,7 @@ export default function DetailDurationChart() {
       const dailyData = responseData.data.dailyTimes;
       const dates = dailyData.map((item: DairyTimesType) => item.date);
       const times = dailyData.map((item: DairyTimesType) =>
-        parseInt(item.totalAirtime , 10)
+        Math.floor(parseInt(item.totalAirTime , 10) / 3600 * 10) / 10
       );
       const datesChange = dates.map((dateString: string) => {
         const parts = dateString.split("-");
@@ -165,12 +165,12 @@ export default function DetailDurationChart() {
           <div className={style["time-container"]}>
             <div className={style["time-title"]}>총 방송시간</div>
             <div className={style["time-cnt"]}>
-              {timeData.totalTime.toLocaleString()}시간
+              {(Math.floor(timeData.totalTime / 3600 * 10) / 10).toLocaleString()}시간
             </div>
             <div
               className={`${style["time-diff"]} ${timeData.timeDiff >= 0 ? style.positive : style.negative}`}
             >
-              {Math.abs(timeData.timeDiff).toLocaleString()}시간{" "}
+              {(Math.floor((timeData.timeDiff / 3600) * 10) / 10).toLocaleString()}시간{" "}
               {timeData.timeDiff >= 0 ? "증가 ↑" : "감소 ↓"}
             </div>
           </div>
