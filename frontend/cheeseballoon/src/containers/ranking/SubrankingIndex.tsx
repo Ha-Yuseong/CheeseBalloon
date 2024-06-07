@@ -124,7 +124,7 @@ function transformLiveData(data: LiveRankData[]): RankingData[] {
 }
 export default function Ranking() {
   const [date, setDate] = useState(1);
-  const [platform, setPlatform] = useState("S");
+  const [platform, setPlatform] = useState("T");
   const [num, setNum] = useState(1);
   const [data, setData] = useState<RankingData[] | undefined>();
   const [allDataLoaded, setAllDataLoaded] = useState(false);
