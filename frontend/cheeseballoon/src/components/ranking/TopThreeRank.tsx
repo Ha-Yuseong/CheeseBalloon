@@ -24,7 +24,8 @@ type RankingData = {
   diff: number;
   rankDiff?: number;
   value: string;
-  value2?: string;
+  category?: string;
+  streamUrl?: string;
   bookmark?: boolean;
 };
 
@@ -160,77 +161,85 @@ export default function TopThreeRanking({ data }: Props) {
                 )}
               </div>
             )}
-            <div className={style.info}>
-              {pathname === "live" ? (
-                <>
-                  {/* <div className={style.content}>
-                    <div>{item.value2}</div> */}
-                  {item.diff.toLocaleString()} 명
-                  {/* </div>
-                  <div>{item.value}</div> */}
-                </>
-              ) : (
-                <>
-                  {item.value}{" "}
-                  {pathname === "rating" && (
-                    <>
-                      {item.diff > 0 && (
-                        <span className={style.positive}>
-                          (+ {Math.abs(item.diff).toFixed(2)})
-                        </span>
-                      )}
-                      {item.diff < 0 && (
-                        <span className={style.negative}>
-                          (- {Math.abs(item.diff).toFixed(2)})
-                        </span>
-                      )}
-                      {item.diff === 0 && (
-                        <span className={style.zero}>( - )</span>
-                      )}
-                    </>
-                  )}
-                  {pathname === "time" && (
-                    <>
-                      {item.diff > 0 && (
-                        <span className={style.positive}>
-                          (+{" "}
-                          {`${String(Math.abs(item.diff)).slice(0, 2)}h ${String(Math.abs(item.diff)).slice(2, 4)}m`}
-                          )
-                        </span>
-                      )}
-                      {item.diff < 0 && (
-                        <span className={style.negative}>
-                          (-{" "}
-                          {`${String(Math.abs(item.diff)).slice(0, 2)}h ${String(Math.abs(item.diff)).slice(2, 4)}m`}
-                          )
-                        </span>
-                      )}
-                      {item.diff === 0 && (
-                        <span className={style.zero}>( - )</span>
-                      )}
-                    </>
-                  )}{" "}
-                  {pathname !== "rating" && pathname !== "time" && (
-                    <>
-                      {item.diff > 0 && (
-                        <span className={style.positive}>
-                          (+ {Math.abs(item.diff).toLocaleString()})
-                        </span>
-                      )}
-                      {item.diff < 0 && (
-                        <span className={style.negative}>
-                          (- {Math.abs(item.diff).toLocaleString()})
-                        </span>
-                      )}
-                      {item.diff === 0 && (
-                        <span className={style.zero}>( - )</span>
-                      )}
-                    </>
-                  )}
-                  {item.diff === 0 && <span className={style.zero}>( - )</span>}
-                </>
-              )}
-            </div>
+            {pathname === "live" ? (
+              <div>
+                <div className={style.liveinfo}>
+                  <div className={style.content1}>{item.category}</div>
+                  <div className={style.content2}>
+                    {item.diff.toLocaleString()} 명
+                  </div>
+                </div>
+                <div className={style.info2}>
+                  <Link
+                    href={item.streamUrl || ""}
+                    className={style.link}
+                    target="_blank"
+                  >
+                    {item.value}
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className={style.info}>
+                {item.value}{" "}
+                {pathname === "rating" && (
+                  <>
+                    {item.diff > 0 && (
+                      <span className={style.positive}>
+                        (+ {Math.abs(item.diff).toFixed(2)})
+                      </span>
+                    )}
+                    {item.diff < 0 && (
+                      <span className={style.negative}>
+                        (- {Math.abs(item.diff).toFixed(2)})
+                      </span>
+                    )}
+                    {item.diff === 0 && (
+                      <span className={style.zero}>( - )</span>
+                    )}
+                  </>
+                )}
+                {pathname === "time" && (
+                  <>
+                    {item.diff > 0 && (
+                      <span className={style.positive}>
+                        (+{" "}
+                        {`${String(Math.abs(item.diff)).slice(0, 2)}h ${String(Math.abs(item.diff)).slice(2, 4)}m`}
+                        )
+                      </span>
+                    )}
+                    {item.diff < 0 && (
+                      <span className={style.negative}>
+                        (-{" "}
+                        {`${String(Math.abs(item.diff)).slice(0, 2)}h ${String(Math.abs(item.diff)).slice(2, 4)}m`}
+                        )
+                      </span>
+                    )}
+                    {item.diff === 0 && (
+                      <span className={style.zero}>( - )</span>
+                    )}
+                  </>
+                )}{" "}
+                {pathname !== "rating" && pathname !== "time" && (
+                  <>
+                    {item.diff > 0 && (
+                      <span className={style.positive}>
+                        (+ {Math.abs(item.diff).toLocaleString()})
+                      </span>
+                    )}
+                    {item.diff < 0 && (
+                      <span className={style.negative}>
+                        (- {Math.abs(item.diff).toLocaleString()})
+                      </span>
+                    )}
+                    {item.diff === 0 && (
+                      <span className={style.zero}>( - )</span>
+                    )}
+                  </>
+                )}
+                {item.diff === 0 && <span className={style.zero}>( - )</span>}
+              </div>
+            )}
           </div>
         ))}
     </div>

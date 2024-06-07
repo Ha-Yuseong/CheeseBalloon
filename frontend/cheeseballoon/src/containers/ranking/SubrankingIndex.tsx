@@ -14,8 +14,9 @@ import {
   TopviewRankData,
   TimeRankData,
   RatingRankData,
-  LiveData,
+  LiveRankData,
 } from "src/types/type";
+import decodetext from "src/lib/DecodeText";
 
 type RankingData = {
   streamerId: number;
@@ -34,7 +35,7 @@ function transformFollowData(data: FollowRankData[]): RankingData[] {
   return data.map((item) => ({
     streamerId: item.streamerId,
     profileUrl: item.profileUrl,
-    name: item.name,
+    name: decodetext(item.name),
     platform: item.platform,
     diff: item.diff,
     rankDiff: item.rankDiff,
@@ -47,7 +48,7 @@ function transformTopviewData(data: TopviewRankData[]): RankingData[] {
   return data.map((item) => ({
     streamerId: item.streamerId,
     profileUrl: item.profileUrl,
-    name: item.name,
+    name: decodetext(item.name),
     platform: item.platform,
     diff: item.diff,
     rankDiff: item.rankDiff,
@@ -60,7 +61,7 @@ function transformAvgData(data: AvgRankData[]): RankingData[] {
   return data.map((item) => ({
     streamerId: item.streamerId,
     profileUrl: item.profileUrl,
-    name: item.name,
+    name: decodetext(item.name),
     platform: item.platform,
     diff: item.diff,
     rankDiff: item.rankDiff,
@@ -80,23 +81,26 @@ function timeConvert(timeString: string): number {
 }
 
 function transformTimeData(data: TimeRankData[]): RankingData[] {
-  return data.map((item) => ({
-    streamerId: item.streamerId,
-    profileUrl: item.profileUrl,
-    name: item.name,
-    platform: item.platform,
-    diff: timeConvert(item.diff),
-    rankDiff: item.rankDiff,
-    value: `${item.totalAirTime.substring(0, 2)}h ${item.totalAirTime.substring(3, 5)}m`,
-    bookmark: item.bookmark,
-  }));
+  return data.map((item) => {
+    const [hours, minutes, seconds] = item.totalAirTime.split(":");
+    return {
+      streamerId: item.streamerId,
+      profileUrl: item.profileUrl,
+      name: decodetext(item.name),
+      platform: item.platform,
+      diff: timeConvert(item.diff),
+      rankDiff: item.rankDiff,
+      value: `${hours}h ${minutes}m`,
+      bookmark: item.bookmark,
+    };
+  });
 }
 
 function transformRatingData(data: RatingRankData[]): RankingData[] {
   return data.map((item) => ({
     streamerId: item.streamerId,
     profileUrl: item.profileUrl,
-    name: item.name,
+    name: decodetext(item.name),
     platform: item.platform,
     diff: item.diff,
     rankDiff: item.rankDiff,
@@ -105,16 +109,17 @@ function transformRatingData(data: RatingRankData[]): RankingData[] {
   }));
 }
 
-function transformLiveData(data: LiveData[]): RankingData[] {
+function transformLiveData(data: LiveRankData[]): RankingData[] {
   return data.map((item) => ({
-    streamerId: item.streamId,
+    streamerId: item.streamerId,
     profileUrl: item.profileUrl,
-    name: item.name,
+    name: decodetext(item.name),
     platform: item.platform,
     diff: item.viewerCnt,
-    value: item.title,
-    category: item.category,
+    value: decodetext(item.title),
+    category: decodetext(item.category),
     streamUrl: item.streamUrl,
+    bookmark: item.bookmark,
   }));
 }
 export default function Ranking() {
@@ -180,8 +185,8 @@ export default function Ranking() {
         apiUrl = process.env.NEXT_PUBLIC_RATING_RANK;
         break;
       case "live":
-        apiUrl = process.env.NEXT_PUBLIC_LIVE_API;
-        queryString = `offset=1&limit=300&date=${date}&platform=${platform}`;
+        apiUrl = process.env.NEXT_PUBLIC_LIVE_RANK;
+        queryString = `platform=${platform}`;
         break;
       default:
         apiUrl = process.env.NEXT_PUBLIC_AVG_RANK;
@@ -244,10 +249,9 @@ export default function Ranking() {
               <PlatformSelect setPlatform={setPlatform} />
             </div>
           ) : (
-            <>
-              <br></br>
-              <br></br>
-            </>
+            <div className={style.detail_menu}>
+              <PlatformSelect setPlatform={setPlatform} />
+            </div>
           )}
         </div>
         <Loading />
@@ -265,10 +269,9 @@ export default function Ranking() {
           <PlatformSelect setPlatform={setPlatform} />
         </div>
       ) : (
-        <>
-          <br></br>
-          <br></br>
-        </>
+        <div className={style.detail_menu}>
+          <PlatformSelect setPlatform={setPlatform} />
+        </div>
       )}
       <TopThreeRanking data={subrankData as RankingData[]} />
       <RestRanking data={subrankAllData as RankingData[]} />

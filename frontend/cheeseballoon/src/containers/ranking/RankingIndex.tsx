@@ -7,6 +7,7 @@ import { useState, useEffect, useMemo } from "react";
 import RankingIndex from "src/components/ranking/RankingIndex";
 import { RankingData } from "src/types/type";
 import Loading from "src/app/loading";
+import decodetext from "src/lib/DecodeText";
 
 export default function Ranking() {
   const [date, setDate] = useState(1);
@@ -47,14 +48,24 @@ export default function Ranking() {
         url = `${process.env.NEXT_PUBLIC_RATING_RANK}?date=${selectedDate}&platform=${selectedPlatform}`;
         break;
       case "실시간 LIVE":
-        url = `${process.env.NEXT_PUBLIC_LIVE_API}?offset=1&limit=10&date=${selectedDate}&platform=${selectedPlatform}`;
+        url = `${process.env.NEXT_PUBLIC_LIVE_RANK}?platform=${selectedPlatform}`;
         break;
       default:
         url = undefined;
     }
-    return url
-      ? fetch(url).then((response) => response.json())
-      : Promise.resolve(undefined);
+    if (url) {
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data?.data) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        data.data = data.data.map((item: any) => ({
+          ...item,
+          name: decodetext(item.name),
+        }));
+      }
+      return data;
+    }
+    return undefined;
   };
 
   useEffect(() => {

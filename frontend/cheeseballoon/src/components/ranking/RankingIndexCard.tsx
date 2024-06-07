@@ -101,13 +101,13 @@ export default function RankCard({ item, title, number }: Props) {
       </div>
       {RenderRank && (
         <div className={styles.rank}>
-          {item.rankDiff > 0 && (
+          {item.rankDiff !== undefined && item.rankDiff > 0 && (
             <>
               <Image src={ArrowUp} alt="" width={7} height={12} />
               <span>{Math.abs(item.rankDiff)}</span>
             </>
           )}
-          {item.rankDiff < 0 && (
+          {item.rankDiff !== undefined && item.rankDiff < 0 && (
             <>
               <Image src={ArrowDown} alt="" width={7} height={12} />
               <span>{Math.abs(item.rankDiff)}</span>

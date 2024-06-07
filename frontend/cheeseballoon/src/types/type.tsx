@@ -76,10 +76,15 @@ export interface RatingRankData {
 export interface LiveRankData {
   streamerId: number;
   name: string;
+  title: string;
   platform: string;
   profileUrl: string;
+  category: string;
+  viewerCnt: number;
+  streamUrl: string;
+  channelUrl: string;
   bookmark: boolean;
-  rankDiff: number;
+  rankDiff?: number;
 }
 export interface RankingData {
   [title: string]: {
