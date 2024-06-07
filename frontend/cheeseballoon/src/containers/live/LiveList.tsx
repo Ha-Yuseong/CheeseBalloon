@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import style from "src/containers/live/LiveList.module.scss";
-import LiveCard from "src/containers/live/LiveCard";
+import style from "./LiveList.module.scss";
+import LiveCard from "./LiveCard";
 
 interface LiveInfo {
   streamerId: number;

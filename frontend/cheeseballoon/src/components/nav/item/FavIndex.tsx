@@ -20,7 +20,7 @@ export default function Fav({ value }: ValueProps) {
 
   const fetchData = async () => {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_LIVE_API}?offset=1&limit=20`
+      `${process.env.NEXT_PUBLIC_LIVE_API}?offset=0&limit=20`
     );
     const responseData = await response.json();
     setFavData(responseData.data);
