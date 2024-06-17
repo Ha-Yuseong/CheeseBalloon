@@ -78,7 +78,6 @@ export default function SearchResult() {
     fetch(`${cheese_api}/live/search?query=${query}`, {})
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
         setSearchLiveResults(data);
       });
   }, [cheese_api, query]);
@@ -229,7 +228,7 @@ export default function SearchResult() {
                       </div>
                     </a>
                     <a
-                      href={`http://localhost:3000/detail/${live.streamerId}`}
+                      href={`https://cheeseballoon.site/detail//${live.streamerId}`}
                       className={styles.hyper_link}
                     >
                       <div className={styles.responisve_bj_name}>
