@@ -1,4 +1,5 @@
 import Link from "next/link";
+import error from "public/svgs/no_image.jpg";
 import styles from "src/components/notice/NoticeCard.module.scss";
 
 interface NoticeDataType {
@@ -13,7 +14,7 @@ interface NoticeDataType {
 }
 
 export default function NoticeCard({ noticeInfo }: NoticeDataType) {
-  const dateRegDt = new Date(noticeInfo.regDt)
+  const dateRegDt = new Date(noticeInfo.regDt);
   const date = dateRegDt.toLocaleDateString("ko-KR", {
     year: "numeric",
     month: "2-digit",
@@ -30,6 +31,9 @@ export default function NoticeCard({ noticeInfo }: NoticeDataType) {
         <div className={styles.box}>
           <img
             src={noticeInfo.thumbnail}
+            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+              e.currentTarget.src = error.src;
+            }}
             alt="이미지"
             width={200}
             height={130}
