@@ -7,6 +7,7 @@ import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import { LiveData } from "src/types/type";
 import noimage from "public/svgs/blank_profile.png";
 import Link from "next/link";
+import decodeText from "src/lib/DecodeText";
 
 type Props = {
   data: LiveData | undefined;
@@ -86,14 +87,18 @@ export default function RecomendCard({ data }: Props) {
             </div>
             <div>
               <div className={styles.content}>
-                <div className={styles.titledisc}>{data?.name}</div>
+                <div className={styles.titledisc}>
+                  {decodeText(data?.name as string)}
+                </div>
                 {data?.platform === "A" || data?.platform === "S" ? (
                   <Image src={aflogo} alt="" width={14} height={14} />
                 ) : (
                   <Image src={chzzk} alt="" width={14} height={14} />
                 )}
               </div>
-              <div className={styles.subcontent}>{data?.category}</div>
+              <div className={styles.subcontent}>
+                {decodeText(data?.category as string)}
+              </div>
             </div>
 
             <div className={styles.viewer}>
@@ -125,7 +130,9 @@ export default function RecomendCard({ data }: Props) {
               <div className={styles.description_modal} style={modalStyle}>
                 <div className={styles.modal_container}>
                   <div className={styles.content}>
-                    <div className={styles.closed_titledisc}>{data?.name}</div>
+                    <div className={styles.closed_titledisc}>
+                      {decodeText(data?.name as string)}
+                    </div>
                     {data?.platform === "A" || data?.platform === "S" ? (
                       <Image src={aflogo} alt="" width={14} height={14} />
                     ) : (
@@ -136,7 +143,9 @@ export default function RecomendCard({ data }: Props) {
                     {data?.viewerCnt.toLocaleString()}
                   </div>
                 </div>
-                <div className={styles.modal_subcontent}>{data?.category}</div>
+                <div className={styles.modal_subcontent}>
+                  {decodeText(data?.category as string)}
+                </div>
               </div>
             )}
           </div>
