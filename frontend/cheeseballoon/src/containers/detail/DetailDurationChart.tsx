@@ -14,14 +14,14 @@ type AlignType = "center";
 type TimeDataType = {
   totalTime: number;
   timeDiff: number;
-  dailyTimes: [date: string, totalAirTime : number];
+  dailyTimes: [date: string, totalAirTime: number];
 };
 
 type DateArrayType = string[];
 type TimeArrayType = number[];
 type DairyTimesType = {
   date: string;
-  totalAirTime : string;
+  totalAirTime: string;
 };
 
 const API_URL = process.env.NEXT_PUBLIC_TIME_API_URL;
@@ -40,16 +40,17 @@ async function getData(streamerId: string, date: string) {
 export default function DetailDurationChart() {
   const { id, date } = useParams();
   const [timeData, setTimeData] = useState<TimeDataType | null>(null);
-  const [timeArray, setTimeArray] = useState<TimeArrayType | null>([1]);
-  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(["1"]);
+  const [timeArray, setTimeArray] = useState<TimeArrayType>([]);
+  const [dateXaxis, setDateXaxis] = useState<DateArrayType>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const responseData = await getData(id as string, date as string);
       const dailyData = responseData.data.dailyTimes;
       const dates = dailyData.map((item: DairyTimesType) => item.date);
-      const times = dailyData.map((item: DairyTimesType) =>
-        Math.floor(parseInt(item.totalAirTime , 10) / 3600 * 10) / 10
+      const times = dailyData.map(
+        (item: DairyTimesType) =>
+          Math.floor((parseInt(item.totalAirTime, 10) / 3600) * 10) / 10
       );
       const datesChange = dates.map((dateString: string) => {
         const parts = dateString.split("-");
@@ -67,7 +68,6 @@ export default function DetailDurationChart() {
     fetchData();
   }, [id, date]);
 
-  
   const chartData = {
     options: {
       title: {
@@ -107,7 +107,9 @@ export default function DetailDurationChart() {
       },
       yaxis: [
         {
-          tickAmount: 5,
+          min: 0,
+          max: 24,
+          tickAmount: 12,
           labels: {
             style: {
               colors: "white",
@@ -165,13 +167,18 @@ export default function DetailDurationChart() {
           <div className={style["time-container"]}>
             <div className={style["time-title"]}>총 방송시간</div>
             <div className={style["time-cnt"]}>
-              {(Math.floor(timeData.totalTime / 3600 * 10) / 10).toLocaleString()}시간
+              {(
+                Math.floor((timeData.totalTime / 3600) * 10) / 10
+              ).toLocaleString()}
+              시간
             </div>
             <div
               className={`${style["time-diff"]} ${timeData.timeDiff >= 0 ? style.positive : style.negative}`}
             >
-              {(Math.floor((timeData.timeDiff / 3600) * 10) / 10).toLocaleString()}시간{" "}
-              {timeData.timeDiff >= 0 ? "증가 ↑" : "감소 ↓"}
+              {(
+                Math.floor((timeData.timeDiff / 3600) * 10) / 10
+              ).toLocaleString()}
+              시간 {timeData.timeDiff >= 0 ? "증가 ↑" : "감소 ↓"}
             </div>
           </div>
         </div>

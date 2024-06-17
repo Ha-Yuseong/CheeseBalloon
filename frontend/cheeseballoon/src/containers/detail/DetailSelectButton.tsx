@@ -77,7 +77,7 @@ export default function DetailSelectButton() {
       >
         팔로워
       </button>
-      {/* 
+
       <button
         onClick={() => {
           handleSelectContent("calendar");
@@ -89,7 +89,7 @@ export default function DetailSelectButton() {
         className={`${style.button} ${category === "calendar" ? style.select : null}`}
       >
         방송기록
-      </button> */}
+      </button>
     </div>
   );
 }

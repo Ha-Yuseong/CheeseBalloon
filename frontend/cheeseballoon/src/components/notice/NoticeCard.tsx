@@ -1,24 +1,47 @@
+import Link from "next/link";
 import styles from "src/components/notice/NoticeCard.module.scss";
-import MainImage from "src/stores/no_image_profile.png";
-import Image from "next/image";
 
-export default function NoticeCard() {
+interface NoticeDataType {
+  noticeInfo: {
+    noticeId: number;
+    title: string;
+    content: string;
+    thumbnail: string;
+    regDt: string;
+    nickname: string;
+  };
+}
+
+export default function NoticeCard({ noticeInfo }: NoticeDataType) {
+  const dateRegDt = new Date(noticeInfo.regDt)
+  const date = dateRegDt.toLocaleDateString("ko-KR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
   return (
     <div className={styles.wrap}>
-      <div className={styles.box}>
-        <Image
-          src={MainImage}
-          alt="Main Image"
-          width={200}
-          height={130}
-          className={styles.image}
-        />
-        <div className={styles.textContainer}>
-          <div className={styles.update}>업데이트</div>
-          <div className={styles.title}>첫번째 업데이트</div>
-          <div className={styles.date}>2024/05/20</div>
+      <Link
+        key={noticeInfo.noticeId}
+        href={`/notice/${noticeInfo.noticeId}`}
+        className={styles.cardlink}
+      >
+        <div className={styles.box}>
+          <img
+            src={noticeInfo.thumbnail}
+            alt="이미지"
+            width={200}
+            height={130}
+            className={styles.image}
+          />
+          <div className={styles.textContainer}>
+            <div className={styles.update}>업데이트</div>
+            <div className={styles.title}>{noticeInfo.title}</div>
+            <div className={styles.date}>{date}</div>
+          </div>
         </div>
-      </div>
+      </Link>
     </div>
   );
 }

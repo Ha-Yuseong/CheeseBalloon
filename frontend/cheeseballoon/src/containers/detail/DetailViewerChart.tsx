@@ -43,10 +43,10 @@ async function getData(streamerId: string, date: string) {
 export default function DetailViewerChart() {
   const { id, date } = useParams();
   const [viewerData, setViewerData] = useState<ViewerDataType | null>(null);
-  const [avgViewerArray, setAvgViewerArray] = useState<ViewerArrayType>([1]);
-  const [maxViewerArray, setMaxViewerArray] = useState<ViewerArrayType>([1]);
+  const [avgViewerArray, setAvgViewerArray] = useState<ViewerArrayType>([]);
+  const [maxViewerArray, setMaxViewerArray] = useState<ViewerArrayType>([]);
   // const [dateArray, setDateArray] = useState<DateArrayType | null>(null);
-  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(["1"]);
+  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>([]);
 
   useEffect(() => {
     const fetchData = async () => {
