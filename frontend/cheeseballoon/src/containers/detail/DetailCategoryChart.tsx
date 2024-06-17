@@ -67,12 +67,16 @@ export default function DetailCategoryChart() {
       const { seriesData, labelsData } = categoriesData.reduce(
         (acc: Accumulator, item: DailyCategoryType) => {
           acc.seriesData.push(item.time);
-          acc.labelsData.push(item.category);
+          if (item.category === "") {
+            acc.labelsData.push("카테고리 없음");
+          } else {
+            acc.labelsData.push(item.category);
+          }
           return acc;
         },
         { seriesData: [], labelsData: [] }
       );
-
+      console.log(categoriesData);
       setSeries(seriesData);
       setLabels(labelsData);
 
@@ -104,7 +108,8 @@ export default function DetailCategoryChart() {
       labels: labels as string[],
       tooltip: {
         y: {
-          formatter: (value: number) => `${value.toLocaleString()}시간`,
+          formatter: (value: number) =>
+            `${(Math.floor((value / 3600) * 10) / 10).toLocaleString()}시간`,
         },
       },
       legend: {
@@ -155,7 +160,9 @@ export default function DetailCategoryChart() {
           lists.map((item, idx: number) => (
             <div className={style.list} key={idx}>
               <div className={style.rank}>{idx + 1}</div>
-              <div className={style.name}>{item.title}</div>
+              <div className={style.name}>
+                {item.title === "" ? "카테고리 없음" : item.title}
+              </div>
               <div className={style.time}>
                 <div>
                   {(Math.floor((item.time / 3600) * 10) / 10).toLocaleString()}
