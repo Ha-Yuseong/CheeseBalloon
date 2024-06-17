@@ -256,7 +256,7 @@ export default function SearchResult() {
                     {live.platform === "S" && (
                       <img
                         className={styles.responisve_platform}
-                        src={soop.src}
+                        src={a_icon.src}
                         alt="S"
                       />
                     )}

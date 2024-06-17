@@ -70,7 +70,7 @@ export default function Home() {
           <div className={styles.sub_title}>
             <p>최근 30일 기준의 랭킹 변동을 나타내는 그래프입니다</p>
           </div>
-          <div className={styles.border}>
+          {/* <div className={styles.border}>
             <div className={styles.animation}>
               <div className={styles.animation_container}>
                 <div className={styles.rankbox}>
@@ -115,7 +115,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className={styles.title}>
           <p>LIVE 모아보기</p>
@@ -217,7 +217,7 @@ export default function Home() {
                       {live.platform === "S" && (
                         <img
                           className={styles.responisve_platform}
-                          src={soop.src}
+                          src={a_icon.src}
                           alt="S"
                         />
                       )}
