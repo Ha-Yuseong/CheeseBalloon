@@ -163,7 +163,7 @@ export default function Home() {
                   {/* bj 썸네일 & 제목 & bj 이름 가로정렬 */}
                   <div className={styles.responsive_second_row}>
                     <a
-                      href={`http://localhost:3000/detail/${live.streamerId}`}
+                      href={`https://cheeseballoon.site/detail/${live.streamerId}`}
                       className={styles.hyper_link}
                     >
                       <div className={styles.responisve_bj_thumbnail_box}>
@@ -192,7 +192,7 @@ export default function Home() {
                         </div>
                       </a>
                       <a
-                        href={`http://localhost:3000/detail/${live.streamerId}`}
+                        href={`https://cheeseballoon.site/detail/${live.streamerId}`}
                         className={styles.hyper_link}
                       >
                         <div className={styles.responisve_bj_name}>
