@@ -1,7 +1,53 @@
-import styles from "src/containers/notice/DetailNotice.module.scss";
+"use client";
+
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import DOMPurify from "dompurify";
 import Link from "next/link";
+import styles from "src/containers/notice/DetailNotice.module.scss";
+
+const API_URL = process.env.NEXT_PUBLIC_NOTICE_API_URL;
+
+interface NoticeDataType {
+  noticeId: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+  regDt: Date;
+  nickname: string;
+}
+
+async function getData(api: string, id: string) {
+  const res = await fetch(`${api}?noticeId=${id}`);
+
+  return res.json();
+}
 
 export default function DetailNoticeIndex() {
+  const [noticeData, setNoticeData] = useState<NoticeDataType>();
+  const [sanitizedHtml, setSanitizedHtml] = useState<string>("");
+  const [date, setDate] = useState<string>("");
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await getData(API_URL as string, id.toString());
+      setNoticeData(res.data);
+
+      const sanitizedContent = DOMPurify.sanitize(res.data.content);
+      setSanitizedHtml(sanitizedContent);
+
+      const dateObj = new Date(res.data.regDt);
+      const dayOfWeek = dateObj.toLocaleDateString("ko-KR", {
+        weekday: "short",
+      });
+      const formattedDate = `${dateObj.getFullYear()}/${(dateObj.getMonth() + 1).toString().padStart(2, "0")}/${dateObj.getDate().toString().padStart(2, "0")} (${dayOfWeek})`;
+      setDate(formattedDate);
+    };
+    fetchData();
+  }, [id]);
+
   return (
     <div className={styles.wrapper}>
       <div>
@@ -17,24 +63,21 @@ export default function DetailNoticeIndex() {
       </div>
       <div className={styles.titlebox}>
         <div className={styles.wrap}>
-          <div className={styles.date}>2024/05/20</div>
-          <div className={styles.maintitle}>첫번째 업데이트 공지</div>
+          {noticeData && <div className={styles.date}>{date}</div>}
+          {noticeData && noticeData.title && (
+            <div className={styles.maintitle}>{noticeData.title}</div>
+          )}
         </div>
       </div>
       <div className={styles.bodybox}>
-        <p>크롤링 관련 이슈로 인하여 점검이 예정되어 있습니다.</p> 너그러운 양해
-        부탁드리며 자세한 점검시간과 작업영향은 아래 내용을 확인해 주시기
-        바랍니다.
-        <p>
-          <br></br>▣ 점검시간과 작업영향{" "}
-        </p>
-        <p>
-          <br></br>- 오전 6시 ~ 오전 9시(3시간)
-        </p>
-        : 서비스 이용이 불가합니다.
-        <p>
-          <br></br>감사합니다.
-        </p>
+        {noticeData && (
+          // eslint-disable-next-line react/no-danger
+          <div
+            dangerouslySetInnerHTML={{
+              __html: sanitizedHtml,
+            }}
+          ></div>
+        )}
       </div>
       <div className={styles.endline}>
         <div className={styles.lineItem}>

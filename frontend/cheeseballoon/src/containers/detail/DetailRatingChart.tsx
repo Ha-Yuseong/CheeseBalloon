@@ -37,16 +37,14 @@ async function getData(streamerId: string, date: string) {
 
   return res.json();
 }
-const a = [6, null, 5, null, 4, 3, 3]
+
 export default function DetailRatingChart() {
   const { id, date } = useParams();
   const [ratingData, setRatingData] = useState<RatingDataType | null>(null);
-  const [totalRatingArray, setTotalRatingArray] = useState<RatingArrayType>([
-    1,
-  ]);
+  const [totalRatingArray, setTotalRatingArray] = useState<RatingArrayType>([]);
   const [platformRatingArray, setplatformRatingArray] =
-    useState<RatingArrayType>([1]);
-  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>(["1"]);
+    useState<RatingArrayType>([]);
+  const [dateXaxis, setDateXaxis] = useState<DateArrayType | null>([]);
 
   useEffect(() => {
     const fetchData = async () => {

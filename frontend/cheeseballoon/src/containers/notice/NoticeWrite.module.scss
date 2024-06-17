@@ -1,0 +1,63 @@
+.wrapper {
+  margin: 3rem;
+}
+
+.title-container {
+  margin-bottom: 1rem;
+}
+
+.title-subtitle {
+  font-size: x-large;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.title-input {
+  height: 1rem;
+  outline: none;
+}
+
+
+.thumbnail-container {
+  margin-bottom: 2rem;
+}
+
+.thumbnail-subtitle {
+  font-size: large;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.thumbnail-input {
+  color: white;
+}
+
+.thumbail-input-button {
+  color: white;
+}
+
+.submit-container {
+  margin-top: 1rem;
+}
+
+.shake {
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
