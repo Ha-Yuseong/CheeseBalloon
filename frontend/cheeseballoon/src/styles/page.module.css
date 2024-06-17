@@ -23,6 +23,11 @@
   /* left: 50%; */
 }
 
+.notice-link {
+  text-decoration: none;
+  color: inherit;
+}
+
 .notice_title {
   font-family: "GmarketSans";
   font-size: 20px;

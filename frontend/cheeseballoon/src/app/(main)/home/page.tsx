@@ -3,6 +3,7 @@
 /* eslint-disable camelcase */
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import styles from "src/styles/page.module.css";
 
 // eslint-disable-next-line camelcase
@@ -54,15 +55,17 @@ export default function Home() {
     <div className={styles.main}>
       <div className={styles.container}>
         <div className={styles.border}>
-          <div className={styles.notice}>
-            <div className={styles.content}>
-              <div className={styles.pin}>공지</div>
-              <div className={styles.notice_title}>
-                치즈벌룬에 오신 여러분 환영합니다
+          <Link href="/notice" className={styles["notice-link"]}>
+            <div className={styles.notice}>
+              <div className={styles.content}>
+                <div className={styles.pin}>공지</div>
+                <div className={styles.notice_title}>
+                  치즈벌룬에 오신 여러분 환영합니다
+                </div>
+                <div className={styles.date}>2024.03.04</div>
               </div>
-              <div className={styles.date}>2024.03.04</div>
             </div>
-          </div>
+          </Link>
         </div>
         <div className={styles.ranking}>
           <div className={styles.title}>시청률 랭킹</div>
