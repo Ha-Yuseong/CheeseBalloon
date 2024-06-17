@@ -34,7 +34,7 @@ interface data_2 {
 interface data_3 {
   data:
     | {
-        streamId: number;
+        // streamId: number;
         streamerId: number;
         name: string;
         isLive: boolean;
@@ -200,7 +200,7 @@ export default function SearchResult() {
                 {/* bj 썸네일 & 제목 & bj 이름 가로정렬 */}
                 <div className={styles.responsive_second_row}>
                   <a
-                    href={`https://cheeseballoon.site/detail/${live.streamId}`}
+                    href={`https://cheeseballoon.site/detail/${live.streamerId}`}
                     className={styles.hyper_link}
                   >
                     <div className={styles.responisve_bj_thumbnail_box}>
@@ -229,7 +229,7 @@ export default function SearchResult() {
                       </div>
                     </a>
                     <a
-                      href={`http://localhost:3000/detail/${live.streamId}`}
+                      href={`http://localhost:3000/detail/${live.streamerId}`}
                       className={styles.hyper_link}
                     >
                       <div className={styles.responisve_bj_name}>
