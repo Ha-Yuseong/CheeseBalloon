@@ -104,7 +104,8 @@ export default function DetailCategoryChart() {
       labels: labels as string[],
       tooltip: {
         y: {
-          formatter: (value: number) => `${value.toLocaleString()}시간`,
+          formatter: (value: number) =>
+            `${(Math.floor((value / 3600) * 10) / 10).toLocaleString()}시간`,
         },
       },
       legend: {
