@@ -27,19 +27,6 @@ interface LiveDataType {
   thumbnailUrl: string;
 }
 
-// 임시 데이터
-// const streamerData: StreamerDataType = {
-//   streamId: 1234,
-//   originId: "hanryang1125",
-//   name: "풍월량",
-//   profileUrl:
-//     "https://nng-phinf.pstatic.net/MjAyMzEyMjBfNzgg/MDAxNzAyOTk5MDU4NTQ1.q74UANafs4egu_GflqIXrKZvqweabjdsqb3q7F-vEPEg.0DlZf3Myopu6ITUmTkOYLU-GKcBLotgKn61A0o9ZAN4g.PNG/7d354ef2-b2a8-4276-8c12-5be7f6301ae0-profile_image-600x600.png?type=f120_120_na",
-//   streamUrl: "https://chzzk.naver.com/7ce8032370ac5121dcabce7bad375ced",
-//   followerCnt: 178000,
-//   platform: "치지직",
-//   bookmark: false,
-// };
-
 const STREAMER_API_URL = process.env.NEXT_PUBLIC_STREAMER_API_URL;
 const STREAMER_LIVE_API_URL = process.env.NEXT_PUBLIC_STREAMER_LIVE_API_URL;
 const SUMMARY_API_URL = process.env.NEXT_PUBLIC_SUMMARY_API_URL;

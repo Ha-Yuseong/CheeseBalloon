@@ -77,8 +77,8 @@ export default function DetailSelectButton() {
       >
         팔로워
       </button>
-      {/* 
-      <button
+
+      {/* <button
         onClick={() => {
           handleSelectContent("calendar");
         }}
