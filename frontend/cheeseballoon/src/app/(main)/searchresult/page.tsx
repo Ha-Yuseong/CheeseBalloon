@@ -34,6 +34,7 @@ interface data_2 {
 interface data_3 {
   data:
     | {
+        streamId: number;
         streamerId: number;
         name: string;
         isLive: boolean;
@@ -72,12 +73,12 @@ export default function SearchResult() {
     fetch(`${cheese_api}/streamer/search?query=${query}`, {})
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
         setSearchStreamerResults(data);
       });
     fetch(`${cheese_api}/live/search?query=${query}`, {})
       .then((response) => response.json())
       .then((data) => {
+        // console.log(data);
         setSearchLiveResults(data);
       });
   }, [cheese_api, query]);
@@ -100,7 +101,7 @@ export default function SearchResult() {
               <div key={streamer.streamerId} className={styles.streamer}>
                 {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
                 <a
-                  href={`http://localhost:3000/detail/${streamer.streamerId}`}
+                  href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
                   className={styles.hyper_link}
                 >
                   <div className={styles.streamer_thumbnail}>
@@ -129,7 +130,7 @@ export default function SearchResult() {
                       )}
                     </div>
                     <a
-                      href={`http://localhost:3000/detail/${streamer.streamerId}`}
+                      href={`https://cheeseballoon.site/detail/${streamer.streamerId}`}
                       className={styles.hyper_link}
                     >
                       <div className={styles.streamer_name}>
@@ -199,7 +200,7 @@ export default function SearchResult() {
                 {/* bj 썸네일 & 제목 & bj 이름 가로정렬 */}
                 <div className={styles.responsive_second_row}>
                   <a
-                    href={`http://localhost:3000/detail/${live.streamerId}`}
+                    href={`https://cheeseballoon.site/detail/${live.streamId}`}
                     className={styles.hyper_link}
                   >
                     <div className={styles.responisve_bj_thumbnail_box}>
@@ -228,7 +229,7 @@ export default function SearchResult() {
                       </div>
                     </a>
                     <a
-                      href={`http://localhost:3000/detail/${live.streamerId}`}
+                      href={`http://localhost:3000/detail/${live.streamId}`}
                       className={styles.hyper_link}
                     >
                       <div className={styles.responisve_bj_name}>
