@@ -19,10 +19,15 @@ import org.greenpine.cheeseballoon.member.application.service.OauthService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -43,7 +48,13 @@ public class MemberController {
 
     @PostMapping("/accessToken")
     public ResponseEntity<CustomBody> getAccessToken(@AuthenticationPrincipal Long memberId){
-        GetAccessTokenResDto resDto = oauthService.getNewAccessToken(memberId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<GrantedAuthority> authorities = authentication.getAuthorities().stream()
+                .map(authority -> (GrantedAuthority) authority)
+                .toList();
+        String role = authorities.get(0).toString();
+        System.out.println(role);
+        GetAccessTokenResDto resDto = oauthService.getNewAccessToken(memberId, role);
         return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
     }
 
@@ -70,6 +81,7 @@ public class MemberController {
         try{
             UserInfoDto userInfoDto = oauthService.getGoogleUserInfo(code);
             LoginResDto resDto = authUsecase.login(userInfoDto);
+
             return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
         }catch (JsonProcessingException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));
@@ -99,10 +111,10 @@ public class MemberController {
     public ResponseEntity<CustomBody> loginKakaoCode(@RequestParam String code) {
         log.info("loginKakaoCode - Call");
 
-        System.out.println(code);
         try {
             UserInfoDto userInfoDto = oauthService.getKakaoUserInfo(code);
             LoginResDto resDto = authUsecase.login(userInfoDto);
+            System.out.println("토큰 : "+resDto.getAccessToken());
             return ResponseEntity.ok(new CustomBody(StatusEnum.OK, MemberResMsg.SUCCESS, resDto));
         }catch (JsonProcessingException e){
             return ResponseEntity.ok(new CustomBody(StatusEnum.UNAUTHORIZED, MemberResMsg.NOT_FOUND_USER, null));

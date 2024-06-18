@@ -1,4 +1,4 @@
-package org.greenpine.cheeseballoon.live.application.port.out.dto;
+package org.greenpine.cheeseballoon.ranking.application.port.out.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SearchLivesResDto {
+public class FindLiveRankingResDto {
     Long streamerId;
     Long liveId;
     Long liveLogId;
@@ -22,4 +22,5 @@ public class SearchLivesResDto {
     int viewerCnt;
     String streamUrl;
     String channelUrl;
+    Boolean bookmark;
 }
