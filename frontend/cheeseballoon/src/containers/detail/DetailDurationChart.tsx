@@ -36,7 +36,6 @@ async function getData(streamerId: string, date: string) {
 
   return res.json();
 }
-
 export default function DetailDurationChart() {
   const { id, date } = useParams();
   const [timeData, setTimeData] = useState<TimeDataType | null>(null);
@@ -48,9 +47,10 @@ export default function DetailDurationChart() {
       const responseData = await getData(id as string, date as string);
       const dailyData = responseData.data.dailyTimes;
       const dates = dailyData.map((item: DairyTimesType) => item.date);
-      const times = dailyData.map(
-        (item: DairyTimesType) =>
-          Math.floor((parseInt(item.totalAirTime, 10) / 3600) * 10) / 10
+      const times = dailyData.map((item: DairyTimesType) =>
+        parseInt(item.totalAirTime, 10) === 0
+          ? null
+          : Math.floor((parseInt(item.totalAirTime, 10) / 3600) * 10) / 10
       );
       const datesChange = dates.map((dateString: string) => {
         const parts = dateString.split("-");
@@ -115,7 +115,8 @@ export default function DetailDurationChart() {
               colors: "white",
               fontWeight: "bold",
             },
-            formatter: (value: number) => `${value.toLocaleString()}시간`,
+            formatter: (value: number) =>
+              value === null ? "0시간" : `${value.toLocaleString()}시간`,
           },
         },
       ],
@@ -159,7 +160,7 @@ export default function DetailDurationChart() {
           options={chartData.options}
           series={chartData.series}
           height="325%"
-          width="100%"
+          width="98%"
         />
       </div>
       {timeData && (
