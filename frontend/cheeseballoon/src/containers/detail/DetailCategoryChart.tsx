@@ -76,7 +76,7 @@ export default function DetailCategoryChart() {
         },
         { seriesData: [], labelsData: [] }
       );
-      console.log(categoriesData);
+
       setSeries(seriesData);
       setLabels(labelsData);
 

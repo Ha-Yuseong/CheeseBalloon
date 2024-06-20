@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import style from "src/containers/detail/DetailChart.module.scss";
+import style from "src/containers/detail/DetailFollowerChart.module.scss";
 
 const ApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -174,7 +174,7 @@ export default function DetailFollowerChart() {
         options={chartData.options}
         series={chartData.series}
         height="265%"
-        width="100%"
+        width="98%"
       />
     </div>
   );

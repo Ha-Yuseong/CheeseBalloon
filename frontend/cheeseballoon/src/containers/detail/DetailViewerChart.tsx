@@ -53,7 +53,9 @@ export default function DetailViewerChart() {
       const responseData = await getData(id as string, date as string);
       const dailyData = responseData.data.dailyAvgViewers;
       const dates = dailyData.map((item: dailyViewersType) => item.date);
-      const avgViewers = dailyData.map((item: dailyViewersType) => item.viewer);
+      const avgViewers = dailyData.map((item: dailyViewersType) =>
+        item.viewer === 0 ? null : item.viewer
+      );
       const maxViewers = dailyData.map(
         (item: dailyViewersType) => item.maxViewer
       );
@@ -147,7 +149,8 @@ export default function DetailViewerChart() {
             colors: "white",
             fontWeight: "bold",
           },
-          formatter: (value: number) => `${value.toLocaleString()}명`,
+          formatter: (value: number) =>
+            value === null ? `0명` : `${value.toLocaleString()}명`,
         },
       },
       grid: {
@@ -198,7 +201,7 @@ export default function DetailViewerChart() {
           options={chartData.options}
           series={chartData.series}
           height="170%"
-          width="101%"
+          width="98%"
         />
       </div>
       {viewerData && (
