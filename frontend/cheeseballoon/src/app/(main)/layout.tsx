@@ -23,10 +23,12 @@ export default function MainLayout({
   const toggleValue = cookieStore.get("toggle")?.value === "true";
   return (
     <MenuProvider initialToggleValue={toggleValue}>
-      <PaddingProvider>
+      <PaddingProvider initialToggleValue={toggleValue}>
         <div className="children">
           {children}
-          <Footer />
+          <div className="footer">
+            <Footer />
+          </div>
         </div>
       </PaddingProvider>
     </MenuProvider>

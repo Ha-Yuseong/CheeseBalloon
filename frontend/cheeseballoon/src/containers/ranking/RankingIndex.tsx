@@ -8,11 +8,13 @@ import RankingIndex from "src/components/ranking/RankingIndex";
 import { RankingData } from "src/types/type";
 import Loading from "src/app/loading";
 import decodetext from "src/lib/DecodeText";
+import { usePopstate } from "src/lib/PopContext";
 
 export default function Ranking() {
   const [date, setDate] = useState(1);
   const [platform, setPlatform] = useState("T");
   const [loading, setLoading] = useState(true);
+  const { isPopstate, resetPopstate } = usePopstate();
   const title = useMemo(
     () => [
       "팔로워 수",
@@ -25,6 +27,7 @@ export default function Ranking() {
     []
   );
   const [rankingData, setRankingData] = useState<RankingData>({});
+
   const fetchRankingData = async (
     rankingTitle: string,
     selectedDate: number,
@@ -68,27 +71,63 @@ export default function Ranking() {
     return undefined;
   };
 
-  useEffect(() => {
+  const fetchAllData = async (
+    selectedDate: number,
+    selectedPlatform: string
+  ) => {
     setLoading(true);
-    const fetchAllData = async () => {
-      const promises = title.map((titleItem) =>
-        fetchRankingData(titleItem, date, platform)
-      );
-      const results = await Promise.all(promises);
-      const newRankingData = results.reduce((acc, data, index) => {
-        if (data) {
-          acc[title[index]] = data;
-        }
-        return acc;
-      }, {});
+    const promises = title.map((titleItem) =>
+      fetchRankingData(titleItem, selectedDate, selectedPlatform)
+    );
+    const results = await Promise.all(promises);
+    const newRankingData = results.reduce((acc, data, index) => {
+      if (data) {
+        acc[title[index]] = data;
+      }
+      return acc;
+    }, {});
+    setRankingData(newRankingData);
+    setLoading(false);
+  };
 
-      setRankingData(newRankingData);
-      setLoading(false);
-    };
-
-    fetchAllData();
+  useEffect(() => {
+    const savedDate = isPopstate ? sessionStorage.getItem("selectedDate") : "1";
+    const savedPlatform = isPopstate
+      ? sessionStorage.getItem("selectedPlatform")
+      : "T";
+    if (savedDate !== null && savedPlatform !== null) {
+      const parsedDate = parseInt(savedDate, 10);
+      setDate(parsedDate);
+      setPlatform(savedPlatform);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [date, platform]);
+  }, []);
+
+  useEffect(() => {
+    if (!isPopstate) {
+      sessionStorage.setItem("selectedDate", date.toString());
+      sessionStorage.setItem("selectedPlatform", platform);
+      fetchAllData(date, platform);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [date, platform, isPopstate]);
+
+  useEffect(() => {
+    if (isPopstate) {
+      const savedDate = sessionStorage.getItem("selectedDate");
+      const savedPlatform = sessionStorage.getItem("selectedPlatform");
+      if (savedDate !== null && savedPlatform !== null) {
+        const parsedDate = parseInt(savedDate, 10);
+        fetchAllData(parsedDate, savedPlatform);
+        setDate(parsedDate);
+        setPlatform(savedPlatform);
+        resetPopstate();
+      } else {
+        resetPopstate();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPopstate]);
 
   if (loading) {
     return (
@@ -100,8 +139,8 @@ export default function Ranking() {
               정확한 데이터 수치는 더보기를 눌러 확인해주세요.
             </div>
             <div className={style.select_menu}>
-              <DaySelect setDate={setDate} />
-              <PlatformSelect setPlatform={setPlatform} />
+              <DaySelect date={date} setDate={setDate} />
+              <PlatformSelect platform={platform} setPlatform={setPlatform} />
             </div>
           </div>
         </div>
@@ -124,8 +163,8 @@ export default function Ranking() {
           정확한 데이터 수치는 더보기를 눌러 확인해주세요.
         </div>
         <div className={style.select_menu}>
-          <DaySelect setDate={setDate} />
-          <PlatformSelect setPlatform={setPlatform} />
+          <DaySelect date={date} setDate={setDate} />
+          <PlatformSelect platform={platform} setPlatform={setPlatform} />
         </div>
       </div>
       <div>
