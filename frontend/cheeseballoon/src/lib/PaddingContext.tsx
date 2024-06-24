@@ -1,17 +1,36 @@
 "use client";
 
-import { createContext, useContext, ReactNode, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
 import { useToggleState } from "../stores/store";
 
+interface PaddingProviderProps {
+  initialToggleValue: boolean;
+  children: ReactNode;
+}
 // Context 생성
 const PaddingContext = createContext({});
 
 // Provider 생성
-export function PaddingProvider({ children }: { children: ReactNode }) {
+export function PaddingProvider({
+  initialToggleValue,
+  children,
+}: PaddingProviderProps) {
   const { value } = useToggleState();
+  const [paddingValue, setPaddingValue] = useState(initialToggleValue);
+
   const paddingStyle = {
-    paddingLeft: value ? "220px" : "60px",
+    paddingLeft: paddingValue ? "220px" : "60px",
   };
+
+  useEffect(() => {
+    setPaddingValue(value);
+  }, [value]);
 
   useEffect(() => {
     const cleanupLocalStorage = () => {

@@ -204,14 +204,26 @@ export default function TopThreeRanking({ data }: Props) {
                     {item.diff > 0 && (
                       <span className={style.positive}>
                         (+{" "}
-                        {`${String(Math.abs(item.diff)).slice(0, 2)}h ${String(Math.abs(item.diff)).slice(2, 4)}m`}
+                        {`${Math.floor(Math.abs(item.diff) / 3600)
+                          .toString()
+                          .padStart(2, "0")}h ${Math.floor(
+                          (Math.abs(item.diff) % 3600) / 60
+                        )
+                          .toString()
+                          .padStart(2, "0")}m`}
                         )
                       </span>
                     )}
                     {item.diff < 0 && (
                       <span className={style.negative}>
                         (-{" "}
-                        {`${String(Math.abs(item.diff)).slice(0, 2)}h ${String(Math.abs(item.diff)).slice(2, 4)}m`}
+                        {`${Math.floor(Math.abs(item.diff) / 3600)
+                          .toString()
+                          .padStart(2, "0")}h ${Math.floor(
+                          (Math.abs(item.diff) % 3600) / 60
+                        )
+                          .toString()
+                          .padStart(2, "0")}m`}
                         )
                       </span>
                     )}
@@ -219,7 +231,7 @@ export default function TopThreeRanking({ data }: Props) {
                       <span className={style.zero}>( - )</span>
                     )}
                   </>
-                )}{" "}
+                )}
                 {pathname !== "rating" && pathname !== "time" && (
                   <>
                     {item.diff > 0 && (
@@ -235,9 +247,11 @@ export default function TopThreeRanking({ data }: Props) {
                     {item.diff === 0 && (
                       <span className={style.zero}>( - )</span>
                     )}
+                    {item.diff === 0 && (
+                      <span className={style.zero1}>( - )</span>
+                    )}
                   </>
                 )}
-                {item.diff === 0 && <span className={style.zero}>( - )</span>}
               </div>
             )}
           </div>
