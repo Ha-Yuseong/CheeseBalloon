@@ -111,3 +111,8 @@ export interface FavDataType {
   data: LiveData[];
   setData: (newData: LiveData[]) => void;
 }
+export interface MobileState {
+  value: boolean;
+  isMobile: boolean;
+  setIsMobile: (value: boolean) => void;
+}

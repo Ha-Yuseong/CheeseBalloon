@@ -1,8 +1,8 @@
 "use client";
 
 import style from "src/containers/ranking/RankingIndex.module.scss";
-import DaySelect from "src/components/ranking/DaySelect";
-import PlatformSelect from "src/components/ranking/PlatformSelect";
+import DaySelect from "src/components/ranking/SubDaySelect";
+import PlatformSelect from "src/components/ranking/SubPlatformSelect";
 import TopThreeRanking from "src/components/ranking/TopThreeRank";
 import RestRanking from "src/components/ranking/RestRanking";
 import Loading from "src/app/loading";
@@ -17,6 +17,7 @@ import {
   LiveRankData,
 } from "src/types/type";
 import decodetext from "src/lib/DecodeText";
+import { usePopstate } from "src/lib/PopContext";
 
 type RankingData = {
   streamerId: number;
@@ -73,7 +74,13 @@ function transformAvgData(data: AvgRankData[]): RankingData[] {
 function timeConvert(timeString: string): number {
   const isNegative = timeString.startsWith("-");
   const [hr, min, sec] = timeString.replace("-", "").split(":");
-  let result = parseInt(hr + min + sec, 10);
+  const hoursInSeconds = parseInt(hr, 10) * 3600;
+  const minutesInSeconds = parseInt(min, 10) * 60;
+  const seconds = parseInt(sec, 10);
+  let result = hoursInSeconds + minutesInSeconds + seconds;
+  if (result < 6) {
+    return 0;
+  }
   if (isNegative) {
     result *= -1;
   }
@@ -82,7 +89,7 @@ function timeConvert(timeString: string): number {
 
 function transformTimeData(data: TimeRankData[]): RankingData[] {
   return data.map((item) => {
-    const [hours, minutes, seconds] = item.totalAirTime.split(":");
+    const [hours, minutes] = item.totalAirTime.split(":");
     return {
       streamerId: item.streamerId,
       profileUrl: item.profileUrl,
@@ -122,7 +129,8 @@ function transformLiveData(data: LiveRankData[]): RankingData[] {
     bookmark: item.bookmark,
   }));
 }
-export default function Ranking() {
+
+export default function SubRanking() {
   const [date, setDate] = useState(1);
   const [platform, setPlatform] = useState("T");
   const [num, setNum] = useState(1);
@@ -133,6 +141,7 @@ export default function Ranking() {
     RankingData[] | undefined
   >();
   const pathname = usePathname()?.split("/").pop() || "";
+  const { isPopstate, resetPopstate } = usePopstate();
   const mapping: Record<string, string> = {
     follow: "팔로워 수",
     average: "평균 시청자 수",
@@ -165,9 +174,9 @@ export default function Ranking() {
     };
   }, [subrankAllData, allDataLoaded]);
 
-  const fetchData = async () => {
+  const fetchData = async (selectedDate: number, selectedPlatform: string) => {
     let apiUrl;
-    let queryString = `date=${date}&platform=${platform}`;
+    let queryString = `date=${selectedDate}&platform=${selectedPlatform}`;
     switch (pathname) {
       case "follow":
         apiUrl = process.env.NEXT_PUBLIC_FOLLOW_RANK;
@@ -186,7 +195,7 @@ export default function Ranking() {
         break;
       case "live":
         apiUrl = process.env.NEXT_PUBLIC_LIVE_RANK;
-        queryString = `platform=${platform}`;
+        queryString = `platform=${selectedPlatform}`;
         break;
       default:
         apiUrl = process.env.NEXT_PUBLIC_AVG_RANK;
@@ -222,10 +231,46 @@ export default function Ranking() {
   };
 
   useEffect(() => {
-    setLoading(true);
-    fetchData();
+    const savedDate = isPopstate
+      ? sessionStorage.getItem("subSelectedDate")
+      : "1";
+    const savedPlatform = isPopstate
+      ? sessionStorage.getItem("subSelectedPlatform")
+      : "T";
+    if (savedDate !== null && savedPlatform !== null) {
+      const parsedDate = parseInt(savedDate, 10);
+      setDate(parsedDate);
+      setPlatform(savedPlatform);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [date, platform]);
+  }, []);
+
+  useEffect(() => {
+    if (!isPopstate) {
+      sessionStorage.setItem("subSelectedDate", date.toString());
+      sessionStorage.setItem("subSelectedPlatform", platform);
+      fetchData(date, platform);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [date, platform, isPopstate]);
+
+  useEffect(() => {
+    if (isPopstate) {
+      const savedDate = sessionStorage.getItem("subSelectedDate");
+      const savedPlatform = sessionStorage.getItem("subSelectedPlatform");
+      if (savedDate !== null && savedPlatform !== null) {
+        const parsedDate = parseInt(savedDate, 10);
+        fetchData(parsedDate, savedPlatform).then(() => {
+          setDate(parsedDate);
+          setPlatform(savedPlatform);
+          resetPopstate();
+        });
+      } else {
+        resetPopstate();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPopstate]);
 
   useEffect(() => {
     if (num === 1 && data) {
@@ -245,12 +290,12 @@ export default function Ranking() {
           <p className={style.title}>{mapping[pathname]}</p>
           {pathname !== "live" ? (
             <div className={style.detail_menu}>
-              <DaySelect setDate={setDate} />
-              <PlatformSelect setPlatform={setPlatform} />
+              <DaySelect date={date} setDate={setDate} />
+              <PlatformSelect platform={platform} setPlatform={setPlatform} />
             </div>
           ) : (
             <div className={style.detail_menu}>
-              <PlatformSelect setPlatform={setPlatform} />
+              <PlatformSelect platform={platform} setPlatform={setPlatform} />
             </div>
           )}
         </div>
@@ -265,12 +310,12 @@ export default function Ranking() {
       <p className={style.title}>{mapping[pathname]}</p>
       {pathname !== "live" ? (
         <div className={style.detail_menu}>
-          <DaySelect setDate={setDate} />
-          <PlatformSelect setPlatform={setPlatform} />
+          <DaySelect date={date} setDate={setDate} />
+          <PlatformSelect platform={platform} setPlatform={setPlatform} />
         </div>
       ) : (
         <div className={style.detail_menu}>
-          <PlatformSelect setPlatform={setPlatform} />
+          <PlatformSelect platform={platform} setPlatform={setPlatform} />
         </div>
       )}
       <TopThreeRanking data={subrankData as RankingData[]} />

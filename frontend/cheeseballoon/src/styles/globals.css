@@ -18,3 +18,9 @@ body {
   margin: 0;
   background-color: #1e1f27;
 }
+
+@media (max-width: 768px) {
+  .footer {
+    display: none !important;
+  }
+}
