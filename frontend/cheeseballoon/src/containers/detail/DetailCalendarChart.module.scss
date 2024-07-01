@@ -1,13 +1,19 @@
 .wrapper {
-  height: 500px;
+  height: 300px;
   width: 100%;
 }
 
 .container {
-  background-color: #4e4e4e;
+  // background-color: #4e4e4e;
+  border-color: #4e4e4e;
+  border-width: 1rem;
   height: 100%;
   width: 100%;
   border-radius: 20px;
   padding: 1rem;
   box-sizing: border-box;
+}
+
+#calendar-container g rect[x][y][width][height][style] {
+  rx: 4;
 }

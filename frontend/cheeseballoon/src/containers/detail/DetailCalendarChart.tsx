@@ -1,9 +1,48 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { ResponsiveCalendar } from "@nivo/calendar";
 import styles from "./DetailCalendarChart.module.scss";
 
+type ChartDataType = {
+  value: number;
+  day: string;
+};
+
+const API_URL = process.env.NEXT_PUBLIC_TIME_API_URL;
+
+async function getData(streamerId: string, date: string) {
+  let res;
+  if (date) {
+    res = await fetch(`${API_URL}streamerId=${streamerId}&date=${date}`);
+  } else {
+    res = await fetch(`${API_URL}streamerId=${streamerId}&date=1`);
+  }
+
+  return res.json();
+}
+
 export default function DetailCalendarChart() {
+  // const { id, date } = useParams();
+  // const [chartData, setChartData] = useState<ChartDataType>();
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const responseData = await getData(id as string, date as string);
+  //     const datae = [];
+  //     responseData.data.dailyTimes.map((item) => {
+  //       datae.push({
+  //         value: item.totalAirTime,
+  //         day: item.date,
+  //       });
+  //     });
+  //     setChartData(datae);
+  //   };
+  //   fetchData();
+  //   console.log(chartData);
+  // }, [id, date]);
+
   const data = [
     {
       value: 263,
@@ -2355,33 +2394,61 @@ export default function DetailCalendarChart() {
     },
   ];
 
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.innerHTML = `
+      #calendar-container g rect[x][y][width][height][style] {
+        rx: 4;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   return (
     <div className={styles.wrapper}>
-      <div className={styles.container}>
+      <div id="calendar-container" className={styles.container}>
         <ResponsiveCalendar
           data={data}
-          from="2016-03-01"
-          to="2016-07-12"
-          emptyColor="#eeeeee"
-          colors={["#f8b541"]}
+          from="2016-01-01"
+          to="2016-12-31"
+          // emptyColor="#EFF0F2"
+          emptyColor="#4e4e4e"
+          // colors={["#FAC975", "#EC9909"]}
+          colors={["#FFFAE5", "#FDEA9A"]}
           margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
-          yearSpacing={40}
-          monthBorderColor="#000000"
-          monthBorderWidth={3}
-          dayBorderWidth={2}
-          dayBorderColor="#ffffff"
+          // yearLegend={(year: number) => ""}
+          yearLegendOffset={20}
+          // monthBorderColor="#ffffff"
+          monthBorderWidth={1}
+          monthLegendPosition="after"
+          monthLegendOffset={20}
+          monthLegend={(year: number, month: number, chartdate: Date) =>
+            `${month + 1}월`
+          }
+          dayBorderWidth={3}
+          // dayBorderColor="#ffffff"
+          theme={{
+            text: {
+              fill: "white",
+            },
+          }}
           legends={[
             {
-              anchor: "bottom-right",
+              anchor: "bottom",
               direction: "row",
               translateY: 36,
               itemCount: 4,
-              itemWidth: 42,
+              itemWidth: 34,
               itemHeight: 36,
-              itemsSpacing: 14,
-              itemDirection: "right-to-left",
+              itemDirection: "top-to-bottom",
             },
           ]}
+          minValue={0}
+          maxValue={24}
         />
       </div>
     </div>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import afreeca from "public/svgs/afreeca.svg";
 import chzzk from "public/svgs/chzzk.svg";
+import error from "public/svgs/blank_profile.png";
 import style from "src/containers/detail/DetailProfileContent.module.scss";
 
 interface StreamerDataType {
@@ -11,8 +12,7 @@ interface StreamerDataType {
   originId: string;
   name: string;
   profileUrl: string;
-  streamUrl: string;
-  followerCnt: number;
+  channelUrl: string;
   platform: string;
   bookmark: boolean;
 }
@@ -77,15 +77,35 @@ export default function DetailProfileContent() {
     fetchData();
   }, [id, router]);
 
+  const handleOpenUrl = (url: string) => {
+    window.open(url, "_blank");
+  };
+
   return (
     streamerData &&
     rankData && (
-      <div className={style.wrapper}>
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={(event) => {
+          event.stopPropagation();
+          handleOpenUrl(streamerData.channelUrl);
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            handleOpenUrl(streamerData.channelUrl);
+          }
+        }}
+        className={style.wrapper}
+      >
         <div className={style["image-container"]}>
           <img
             className={`${style["profile-image"]} ${liveData && liveData.live ? style.live : null}`}
             src={streamerData.profileUrl}
-            alt="https://ssl.pstatic.net/cmstatic/nng/img/img_anonymous_square_gray_opacity2x.png?type=f120_120_na"
+            alt="프로필"
+            onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+              e.currentTarget.src = error.src;
+            }}
           />
         </div>
         <div>
