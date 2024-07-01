@@ -53,9 +53,7 @@ export default function DetailCategoryChart() {
   );
   const [series, setSeries] = useState<number[]>([]);
   const [labels, setLabels] = useState<string[]>([]);
-  const [lists, setLists] = useState<listType>([
-    { title: "1", time: 1, viewer: 1 },
-  ]);
+  const [lists, setLists] = useState<listType>([]);
 
   useEffect(() => {
     const fetchData = async () => {
