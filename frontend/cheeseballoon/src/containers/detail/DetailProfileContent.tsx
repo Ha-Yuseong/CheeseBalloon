@@ -61,15 +61,15 @@ export default function DetailProfileContent() {
         id.toString()
       );
 
-      if ("data" in streamerDataResponse) {
+      if (streamerDataResponse.status === "OK") {
         setStreamerData(streamerDataResponse.data);
       } else {
         router.push("/error");
       }
-      if ("data" in rankDataResponse) {
+      if (streamerDataResponse.status === "OK") {
         setRankData(rankDataResponse.data);
       }
-      if ("data" in liveDataResponse) {
+      if (streamerDataResponse.status === "OK") {
         setLiveData(liveDataResponse.data);
       }
     };
