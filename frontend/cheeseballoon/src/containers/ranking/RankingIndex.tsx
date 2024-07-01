@@ -9,12 +9,16 @@ import { RankingData } from "src/types/type";
 import Loading from "src/app/loading";
 import decodetext from "src/lib/DecodeText";
 import { usePopstate } from "src/lib/PopContext";
+import { useToggleState, isMobileState } from "src/stores/store";
 
 export default function Ranking() {
   const [date, setDate] = useState(1);
   const [platform, setPlatform] = useState("T");
   const [loading, setLoading] = useState(true);
+  const [chunkSize, setChunkSize] = useState(3);
   const { isPopstate, resetPopstate } = usePopstate();
+  const { value, toggle } = useToggleState();
+  const isMobile = isMobileState((state) => state.isMobile);
   const title = useMemo(
     () => [
       "팔로워 수",
@@ -129,6 +133,27 @@ export default function Ranking() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPopstate]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      const adjusted768 = 768 + (value ? 160 : 0);
+      const adjusted1090 = 1090 + (value ? 160 : 0);
+
+      if (isMobile) {
+        setChunkSize(1);
+      } else if (window.innerWidth < adjusted768) {
+        setChunkSize(1);
+      } else if (window.innerWidth < adjusted1090) {
+        setChunkSize(2);
+      } else {
+        setChunkSize(3);
+      }
+    };
+    handleResize(); // Set initial size
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   if (loading) {
     return (
       <>
@@ -150,7 +175,6 @@ export default function Ranking() {
     );
   }
 
-  const chunkSize = 3;
   const chunks = [];
   for (let i = 0; i < title.length; i += chunkSize) {
     chunks.push(title.slice(i, i + chunkSize));
