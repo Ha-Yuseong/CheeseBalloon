@@ -39,7 +39,7 @@
 
 .search_btn {
   position: absolute;
-  right: 10px; /* 오른쪽 끝에서 10px 여백 */
+  right: 0px;
   top: 50%;
   transform: translateY(-50%);
   width: 35px;
@@ -50,8 +50,7 @@
   justify-content: center;
 
   > img {
-    width: 100%;
-    height: 100%;
+    height: 75%;
     object-fit: fill;
   }
 }
