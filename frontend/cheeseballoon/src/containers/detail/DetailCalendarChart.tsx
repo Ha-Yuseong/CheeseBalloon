@@ -10,6 +10,12 @@ type ChartDataType = {
   day: string;
 };
 
+type TooltipType = {
+  day: string;
+  value: string;
+  color: string;
+};
+
 const API_URL = process.env.NEXT_PUBLIC_TIME_API_URL;
 
 async function getData(streamerId: string, date: string) {
@@ -824,7 +830,7 @@ export default function DetailCalendarChart() {
     const style = document.createElement("style");
     style.innerHTML = `
       #calendar-container g rect[x][y][width][height][style] {
-        rx: 60;
+        rx: 10;
       }
     `;
     document.head.appendChild(style);
@@ -834,15 +840,7 @@ export default function DetailCalendarChart() {
     };
   }, []);
 
-  const customTooltip = ({
-    value,
-    day,
-    color,
-  }: {
-    value: string;
-    day: string;
-    color: string;
-  }) => (
+  const customTooltip = ({ value, day, color }: TooltipType) => (
     <div className={styles["tooltip-container"]}>
       <div className={styles["tooltip-content"]}>
         <div
@@ -867,19 +865,19 @@ export default function DetailCalendarChart() {
           // emptyColor="#EFF0F2"
           emptyColor="#4e4e4e"
           // colors={["#FAC975", "#EC9909"]}
-          colors={["#FED2C3", "#FDEA9A", "#FCDC5F", "#FBCF23"]}
+          colors={["#FDEA9A", "#FCDC5F", "#FBCF23"]}
           margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
           // yearLegend={(year: number) => ""}
           yearLegendOffset={20}
           // monthBorderColor="#ffffff"
           // monthSpacing={20}
-          monthBorderWidth={1}
+          monthBorderWidth={0}
           monthLegendPosition="after"
           monthLegendOffset={20}
           monthLegend={(year: number, month: number, chartdate: Date) =>
             `${month + 1}월`
           }
-          dayBorderWidth={3}
+          // dayBorderWidth={3}
           // dayBorderColor="#ffffff"
           theme={{
             text: {
