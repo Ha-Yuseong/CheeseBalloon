@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { useToggleState } from "../stores/store";
+import { useToggleState, isMobileState } from "../stores/store";
 
 interface PaddingProviderProps {
   initialToggleValue: boolean;
@@ -23,9 +23,17 @@ export function PaddingProvider({
 }: PaddingProviderProps) {
   const { value } = useToggleState();
   const [paddingValue, setPaddingValue] = useState(initialToggleValue);
+  const isMobile = isMobileState((state) => state.isMobile);
+
+  let paddingLeft;
+  if (isMobile) {
+    paddingLeft = "0px";
+  } else {
+    paddingLeft = paddingValue ? "220px" : "60px";
+  }
 
   const paddingStyle = {
-    paddingLeft: paddingValue ? "220px" : "60px",
+    paddingLeft,
   };
 
   useEffect(() => {
