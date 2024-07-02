@@ -15,18 +15,6 @@ interface NoticeDataType {
 
 const API_URL = process.env.NEXT_PUBLIC_NOTICE_ALL_API_URL;
 
-const dummy: NoticeDataType[] = [
-  {
-    noticeId: 1,
-    title: "제목",
-    content: "내용",
-    thumbnail:
-      "https://media3.giphy.com/media/uIJBFZoOaifHf52MER/giphy.gif?cid=6c09b952mw0oy15vrx5dd7m1e8hihu2bd6k0v9gplg57avv7&ep=v1_gifs_search&rid=giphy.gif&ct=g",
-    regDt: "2024-06-13",
-    nickname: "닉네임",
-  },
-];
-
 export default function NoticeIndex() {
   const [noticeData, setNoticeData] = useState<NoticeDataType[] | null>(null);
   const [noticePage, setNoticePage] = useState<number>(1);
@@ -65,7 +53,6 @@ export default function NoticeIndex() {
       handlePage(pageNum);
     }
   };
-
   return (
     <div className={styles.wrapper}>
       <div>

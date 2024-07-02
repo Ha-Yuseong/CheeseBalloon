@@ -33,10 +33,9 @@ export default function NoticeDetail() {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const res = await getData(API_URL as string, id.toString());
-        setNoticeData(res.data);
-
+      const res = await getData(API_URL as string, id.toString());
+      setNoticeData(res.data);
+      if (res.status === "OK") {
         const sanitizedContent = DOMPurify.sanitize(res.data.content);
         setSanitizedHtml(sanitizedContent);
 
@@ -46,7 +45,7 @@ export default function NoticeDetail() {
         });
         const formattedDate = `${dateObj.getFullYear()}/${(dateObj.getMonth() + 1).toString().padStart(2, "0")}/${dateObj.getDate().toString().padStart(2, "0")} (${dayOfWeek})`;
         setDate(formattedDate);
-      } catch (error) {
+      } else {
         router.push("/error");
       }
     };

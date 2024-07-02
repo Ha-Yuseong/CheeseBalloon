@@ -20,7 +20,6 @@ export default function NoticeCard({ noticeInfo }: NoticeDataType) {
     month: "2-digit",
     day: "2-digit",
   });
-
   return (
     <div className={styles.wrap}>
       <Link
@@ -30,8 +29,9 @@ export default function NoticeCard({ noticeInfo }: NoticeDataType) {
       >
         <div className={styles.box}>
           <img
-            src={noticeInfo.thumbnail}
+            src={noticeInfo.thumbnail || ""}
             onError={(e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+              e.currentTarget.onerror = null;
               e.currentTarget.src = error.src;
             }}
             alt="이미지"
