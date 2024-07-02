@@ -1,18 +1,23 @@
 .wrapper {
   height: 300px;
-  width: 103%;
+  border-width: 1rem;
+  border-radius: 20px;
+
+  border: 2px solid white;
+  margin-top: 1rem;
+
 }
 
 .container {
-  border-color: #4e4e4e;
-  border-width: 1rem;
   height: 100%;
   width: 100%;
-  border-radius: 20px;
-  padding: 1rem;
   box-sizing: border-box;
+  padding: 1.5rem;
 }
 
+.name {
+  color: white;
+}
 
 .tooltip-container {
   background-color: white;
