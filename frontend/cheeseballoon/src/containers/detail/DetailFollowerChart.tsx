@@ -174,7 +174,7 @@ export default function DetailFollowerChart() {
         options={chartData.options}
         series={chartData.series}
         height="265%"
-        width="98%"
+        width="100%"
       />
     </div>
   );

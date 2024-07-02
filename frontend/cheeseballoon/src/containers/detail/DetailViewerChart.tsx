@@ -167,6 +167,9 @@ export default function DetailViewerChart() {
             show: true,
           },
         },
+        padding: {
+          right: 20
+        }
       },
       colors: ["#F0BD53"],
       legend: {
@@ -201,7 +204,7 @@ export default function DetailViewerChart() {
           options={chartData.options}
           series={chartData.series}
           height="170%"
-          width="98%"
+          width="100%"
         />
       </div>
       {viewerData && (
