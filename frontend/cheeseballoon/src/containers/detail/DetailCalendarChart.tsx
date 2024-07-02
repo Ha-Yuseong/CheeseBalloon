@@ -870,7 +870,7 @@ export default function DetailCalendarChart() {
   return (
     <div className={styles.wrapper}>
       <div id="calendar-container" className={styles.container}>
-        {/* <div className={styles.name}>방송 기록</div> */}
+        <div className={styles.name}>방송 기록</div>
         <ResponsiveCalendar
           data={data}
           from={startOfYear}
