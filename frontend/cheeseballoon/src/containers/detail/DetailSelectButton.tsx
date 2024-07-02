@@ -77,19 +77,6 @@ export default function DetailSelectButton() {
       >
         팔로워
       </button>
-
-      {/* <button
-        onClick={() => {
-          handleSelectContent("calendar");
-        }}
-        onKeyDown={() => {
-          handleSelectContent("calendar");
-        }}
-        type="button"
-        className={`${style.button} ${category === "calendar" ? style.select : null}`}
-      >
-        방송기록
-      </button> */}
     </div>
   );
 }
