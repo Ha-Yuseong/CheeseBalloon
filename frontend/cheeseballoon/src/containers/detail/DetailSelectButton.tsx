@@ -7,7 +7,7 @@ export default function DetailSelectButton() {
   const { id, category } = useParams();
   const router = useRouter();
   const handleSelectContent = (content: string) => {
-    router.push(`/detail/${id}/${content}`);
+    router.replace(`/detail/${id}/${content}`);
   };
 
   return (

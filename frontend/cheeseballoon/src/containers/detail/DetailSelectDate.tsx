@@ -9,7 +9,7 @@ export default function DetailSelectDate() {
   const handleChangeDate = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newDate = e.target.value;
 
-    router.push(
+    router.replace(
       category
         ? `/detail/${id}/${category}/${newDate}`
         : `/detail/${id}/viewer/${newDate}`
