@@ -41,22 +41,33 @@ export default function NoticeWrite() {
     }
     const imgFile = imgFiles[0];
     if (imgFile.size > MAX_FILE_SIZE) {
+      // eslint-disable-next-line no-alert
+      alert("이미지 파일 크기가 너무 큽니다!");
       return;
     }
 
     const formData = new FormData();
     formData.append("file", imgFile);
 
-    const res = await fetch(`${IMAGE_UPLOAD_API}`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${AUTH}`,
-      },
-      body: formData,
-    });
+    try {
+      const res = await fetch(`${IMAGE_UPLOAD_API}`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${AUTH}`,
+        },
+        body: formData,
+      });
 
-    const data = await res.json();
-    setThumbnail(data.data.imgUrl);
+      if (!res.ok) {
+        throw new Error("Image upload failed");
+      }
+
+      const data = await res.json();
+      setThumbnail(data.data.imgUrl);
+    } catch (error) {
+      // eslint-disable-next-line no-alert
+      alert("이미지 파일 업로드에 실패했습니다");
+    }
   };
 
   const handleSubmit = async () => {
@@ -73,10 +84,14 @@ export default function NoticeWrite() {
       isError = true;
     }
 
+    if (!thumbnail) {
+      shakeElement("thumbnailInput");
+      isError = true;
+    }
+
     if (isError) {
       return;
     }
-
     const response = await fetch(`${NOTICE_API}`, {
       method: "POST",
       headers: {
@@ -114,6 +129,13 @@ export default function NoticeWrite() {
               onChange={handleThumbnailChange}
             />
           </div>
+          {thumbnail && (
+            <img
+              src={thumbnail || ""}
+              alt="썸네일"
+              className={styles["thumbnail-preview"]}
+            />
+          )}
         </div>
         <div id="editorContainer" className={styles["editor-container"]}>
           <TinyMCE setContentProps={setContent} />
