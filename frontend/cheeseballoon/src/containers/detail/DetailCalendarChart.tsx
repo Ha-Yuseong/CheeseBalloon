@@ -16,6 +16,8 @@ type TooltipType = {
   color: string;
 };
 
+type PeriodType = { startOfYear: string; endOfYear: string };
+
 const API_URL = process.env.NEXT_PUBLIC_TIME_API_URL;
 
 async function getData(streamerId: string, date: string) {
@@ -826,6 +828,16 @@ export default function DetailCalendarChart() {
     },
   ];
 
+  const getPeriod = (): PeriodType => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const startOfYear = `${year}-01-01`;
+    const endOfYear = `${year}-12-31`;
+    return { startOfYear, endOfYear };
+  };
+
+  const { startOfYear, endOfYear } = getPeriod();
+
   useEffect(() => {
     const style = document.createElement("style");
     style.innerHTML = `
@@ -858,10 +870,11 @@ export default function DetailCalendarChart() {
   return (
     <div className={styles.wrapper}>
       <div id="calendar-container" className={styles.container}>
+        <div className={styles.name}>방송 기록</div>
         <ResponsiveCalendar
           data={data}
-          from="2024-01-01"
-          to="2024-12-31"
+          from={startOfYear}
+          to={endOfYear}
           // emptyColor="#EFF0F2"
           emptyColor="#4e4e4e"
           // colors={["#FAC975", "#EC9909"]}

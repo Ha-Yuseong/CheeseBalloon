@@ -160,7 +160,7 @@ export default function DetailDurationChart() {
           options={chartData.options}
           series={chartData.series}
           height="325%"
-          width="98%"
+          width="100%"
         />
       </div>
       {timeData && (
